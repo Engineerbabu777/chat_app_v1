@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:chat_app/core/common/custom_button.dart';
 import 'package:chat_app/core/common/custom_text_field.dart';
 import 'package:chat_app/presentation/screens/auth/signup_screen.dart';
@@ -15,10 +17,39 @@ class _LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordCOntroller = TextEditingController();
 
+  final bool _isPasswordVisible = false;
+  final _emailFocus = FocusNode();
+  final _passwordFocus = FocusNode();
+
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your email address';
+    }
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (!emailRegex.hasMatch(value)) {
+      return 'Please enter a valid email address (e.g., example@email.com)';
+    }
+    return null;
+  }
+
+  String? _validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter a password';
+    }
+    if (value.length < 6) {
+      return 'Password must be at least 6 characters long';
+    }
+    return null;
+  }
+
   @override
   void dispose() {
     emailController.dispose();
     passwordCOntroller.dispose();
+
+    _emailFocus.dispose();
+    _passwordFocus.dispose();
+
     super.dispose();
   }
 
@@ -52,14 +83,18 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: emailController,
                   hintText: "Email",
                   prefxIcon: Icon(Icons.email_outlined),
+                  focusNode: _emailFocus,
+                  validator: _validateEmail,
                 ),
                 SizedBox(height: 16),
+
                 CustomTextField(
                   controller: passwordCOntroller,
                   hintText: "Password",
-                  obscureText: true,
                   prefxIcon: Icon(Icons.lock_outline),
                   suffixIcon: Icon(Icons.visibility),
+                  focusNode: _passwordFocus,
+                  validator: _validatePassword,
                 ),
                 SizedBox(height: 30),
 
