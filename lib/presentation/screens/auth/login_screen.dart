@@ -53,7 +53,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   hintText: "Email",
                   prefxIcon: Icon(Icons.email_outlined),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 16),
                 CustomTextField(
                   controller: passwordCOntroller,
                   hintText: "Password",
