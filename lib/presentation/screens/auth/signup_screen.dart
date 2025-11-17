@@ -131,6 +131,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   controller: usernameController,
                   hintText: "Username",
                   prefxIcon: Icon(Icons.alternate_email),
+                  focusNode: _usernameFocus,
+                  validator: _validateUsername,
                 ),
                 SizedBox(height: 16),
 
@@ -138,6 +140,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   controller: emailController,
                   hintText: "Email",
                   prefxIcon: Icon(Icons.email_outlined),
+                  focusNode: _emailFocus,
+                  validator: _validateEmail,
                 ),
                 SizedBox(height: 16),
 
@@ -146,6 +150,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   hintText: "Password",
                   prefxIcon: Icon(Icons.lock_outline),
                   suffixIcon: Icon(Icons.visibility),
+                  focusNode: _passwordFocus,
+                  validator: _validatePassword,
                 ),
                 SizedBox(height: 16),
 
@@ -153,6 +159,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   controller: phoneController,
                   hintText: "Phone Number",
                   prefxIcon: Icon(Icons.phone_outlined),
+                  focusNode: _phoneFocus,
+                  validator: _validatePhone,
                 ),
                 SizedBox(height: 30),
 
