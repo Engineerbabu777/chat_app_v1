@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'package:chat_app/core/common/custom_button.dart';
 import 'package:chat_app/core/common/custom_text_field.dart';
 import 'package:flutter/gestures.dart';
@@ -11,11 +13,19 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+  final _formKey = GlobalKey<FormState>();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController paswordController = TextEditingController();
   final TextEditingController usernameController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
+
+  final bool _isPasswordVisible = false;
+  final _nameFocus = FocusNode();
+  final _usernameFocus = FocusNode();
+  final _emailFocus = FocusNode();
+  final _passwordFocus = FocusNode();
+  final _phoneFocus = FocusNode();
 
   @override
   void dispose() {
@@ -24,6 +34,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
     usernameController.dispose();
     phoneController.dispose();
     nameController.dispose();
+
+    _nameFocus.dispose();
+    _phoneFocus.dispose();
+    _usernameFocus.dispose();
+    _emailFocus.dispose();
+    _passwordFocus.dispose();
 
     super.dispose();
   }
@@ -34,6 +50,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
       appBar: AppBar(),
       body: SafeArea(
         child: Form(
+          key: _formKey,
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
@@ -91,6 +108,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(height: 30),
 
                 CustomButton(onPressed: () {}, text: "Create Account"),
+
+                SizedBox(height: 15),
 
                 Center(
                   child: RichText(
