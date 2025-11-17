@@ -20,7 +20,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController phoneController = TextEditingController();
   final TextEditingController nameController = TextEditingController();
 
-  final bool _isPasswordVisible = false;
+  bool _isPasswordVisible = false;
   final _nameFocus = FocusNode();
   final _usernameFocus = FocusNode();
   final _emailFocus = FocusNode();
@@ -148,8 +148,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 CustomTextField(
                   controller: paswordController,
                   hintText: "Password",
+                  obscureText: !_isPasswordVisible,
                   prefxIcon: Icon(Icons.lock_outline),
-                  suffixIcon: Icon(Icons.visibility),
+                  suffixIcon: !_isPasswordVisible
+                      ? IconButton(
+                          icon: const Icon(Icons.visibility),
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
+                        )
+                      : IconButton(
+                          icon: const Icon(Icons.visibility_off),
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
+                        ),
                   focusNode: _passwordFocus,
                   validator: _validatePassword,
                 ),

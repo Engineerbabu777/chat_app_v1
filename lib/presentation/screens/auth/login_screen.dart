@@ -14,10 +14,12 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final _formKey = GlobalKey<FormState>();
+
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordCOntroller = TextEditingController();
 
-  final bool _isPasswordVisible = false;
+  bool _isPasswordVisible = false;
   final _emailFocus = FocusNode();
   final _passwordFocus = FocusNode();
 
@@ -60,6 +62,7 @@ class _LoginScreenState extends State<LoginScreen> {
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: Form(
+            key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -92,13 +95,35 @@ class _LoginScreenState extends State<LoginScreen> {
                   controller: passwordCOntroller,
                   hintText: "Password",
                   prefxIcon: Icon(Icons.lock_outline),
-                  suffixIcon: Icon(Icons.visibility),
+                  suffixIcon: !_isPasswordVisible
+                      ? IconButton(
+                          icon: const Icon(Icons.visibility),
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
+                        )
+                      : IconButton(
+                          icon: const Icon(Icons.visibility_off),
+                          onPressed: () {
+                            setState(() {
+                              _isPasswordVisible = !_isPasswordVisible;
+                            });
+                          },
+                        ),
                   focusNode: _passwordFocus,
                   validator: _validatePassword,
                 ),
                 SizedBox(height: 30),
 
-                CustomButton(onPressed: () {}, text: 'Login'),
+                CustomButton(
+                  onPressed: () {
+                    FocusScope.of(context).unfocus();
+                    if (_formKey.currentState?.validate() ?? false) {}
+                  },
+                  text: 'Login',
+                ),
 
                 SizedBox(height: 15),
 
