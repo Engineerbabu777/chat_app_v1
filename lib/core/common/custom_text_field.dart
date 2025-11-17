@@ -30,6 +30,7 @@ class CustomTextField extends StatelessWidget {
       obscureText: obscureText,
       keyboardType: keyboardType,
       focusNode: focusNode,
+      validator: validator,
       decoration: InputDecoration(
         hintText: hintText,
         prefixIcon: prefxIcon,

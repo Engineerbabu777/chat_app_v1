@@ -27,6 +27,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final _passwordFocus = FocusNode();
   final _phoneFocus = FocusNode();
 
+  String? _validateName(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter your full name";
+    }
+    return null;
+  }
+
+
   @override
   void dispose() {
     emailController.dispose();
@@ -75,25 +83,27 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   controller: nameController,
                   hintText: "Full Name",
                   prefxIcon: Icon(Icons.person_outline),
+                  focusNode: _nameFocus,
+                  validator: _validateName,
                 ),
                 SizedBox(height: 16),
 
                 CustomTextField(
-                  controller: nameController,
+                  controller: usernameController,
                   hintText: "Username",
                   prefxIcon: Icon(Icons.alternate_email),
                 ),
                 SizedBox(height: 16),
 
                 CustomTextField(
-                  controller: nameController,
+                  controller: emailController,
                   hintText: "Email",
                   prefxIcon: Icon(Icons.email_outlined),
                 ),
                 SizedBox(height: 16),
 
                 CustomTextField(
-                  controller: nameController,
+                  controller: paswordController,
                   hintText: "Password",
                   prefxIcon: Icon(Icons.lock_outline),
                   suffixIcon: Icon(Icons.visibility),
@@ -101,13 +111,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 SizedBox(height: 16),
 
                 CustomTextField(
-                  controller: nameController,
+                  controller: phoneController,
                   hintText: "Phone Number",
                   prefxIcon: Icon(Icons.phone_outlined),
                 ),
                 SizedBox(height: 30),
 
-                CustomButton(onPressed: () {}, text: "Create Account"),
+                CustomButton(
+                  onPressed: () {
+                    FocusScope.of(context).unfocus();
+                    if (_formKey.currentState?.validate() ?? false) {}
+                  },
+                  text: "Create Account",
+                ),
 
                 SizedBox(height: 15),
 
