@@ -62,6 +62,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return null;
   }
 
+  String? _validatePhone(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your phone number';
+    }
+
+    final phoneRegex = RegExp(r'^\+?[\d\s-]{10,}$');
+    if (!phoneRegex.hasMatch(value)) {
+      return 'Please enter a valid phone number (e.g., +1234567890)';
+    }
+    return null;
+  }
+
   @override
   void dispose() {
     emailController.dispose();
