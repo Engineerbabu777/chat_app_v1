@@ -22,6 +22,13 @@ class _LoginScreenState extends State<LoginScreen> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
+              SizedBox(height: 10),
+              Text(
+                "Sign in to continue",
+                style: Theme.of(
+                  context,
+                ).textTheme.labelLarge?.copyWith(color: Colors.grey),
+              ),
             ],
           ),
         ),
