@@ -1,4 +1,6 @@
+import 'package:chat_app/core/common/custom_button.dart';
 import 'package:chat_app/core/common/custom_text_field.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -50,6 +52,31 @@ class _LoginScreenState extends State<LoginScreen> {
                   obscureText: true,
                   prefxIcon: Icon(Icons.lock_outline),
                   suffixIcon: Icon(Icons.visibility),
+                ),
+                SizedBox(height: 30),
+
+                CustomButton(onPressed: () {}, text: 'Login'),
+
+                SizedBox(height: 15),
+
+                Center(
+                  child: RichText(
+                    text: TextSpan(
+                      text: "Don't have an account?  ",
+                      style: TextStyle(color: Colors.grey[600]),
+                      children: [
+                        TextSpan(
+                          text: "Signup",
+                          style: Theme.of(context).textTheme.bodyLarge
+                              ?.copyWith(
+                                color: Theme.of(context).primaryColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                          recognizer: TapGestureRecognizer(),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ],
             ),
