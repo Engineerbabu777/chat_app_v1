@@ -34,8 +34,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
     return null;
   }
 
-  
+  String? _validateUsername(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Please enter your username";
+    }
+    return null;
+  }
 
+  String? _validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Please enter your email address';
+    }
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    if (!emailRegex.hasMatch(value)) {
+      return 'Please enter a valid email address (e.g., example@email.com)';
+    }
+    return null;
+  }
 
   @override
   void dispose() {
