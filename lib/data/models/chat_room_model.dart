@@ -56,6 +56,32 @@ class ChatRoomModel {
     );
   }
 
+  factory ChatRoomModel.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+
+    return ChatRoomModel(
+      id: data["id"] ?? doc.id,
+      participants: List<String>.from(data["participants"] ?? []),
+      lastMessage: data["lastMessage"],
+      lastMessageSenderId: data["lastMessageSenderId"],
+      lastMessageTime: data["lastMessageTime"],
+      lastRead: data["lastRead"],
+      lastReadTime:
+          (data["lastReadTime"] as Map<String, dynamic>?)?.map(
+            (key, value) => MapEntry(key, value as Timestamp),
+          ) ??
+          {},
+      participantsName:
+          (data["participantsName"] as Map<String, dynamic>?)?.map(
+            (key, value) => MapEntry(key, value as String),
+          ) ??
+          {},
+      isTyping: data["isTyping"] ?? false,
+      isTypingUserId: data["isTypingUserId"],
+      isCallActive: data["isCallActive"] ?? false,
+    );
+  }
+
   Map<String, dynamic> toMap() {
     return {
       "id": id,
