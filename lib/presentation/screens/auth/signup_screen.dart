@@ -95,18 +95,22 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   Future<void> handleSignUp() async {
     FocusScope.of(context).unfocus();
-    if (_formKey.currentState?.validate() ?? false) {}
-
-    try {
-      getIt<AuthRepository>().signUp(
-        fullName: nameController.text,
-        username: usernameController.text,
-        email: emailController.text,
-        phoneNumber: phoneController.text,
-        password: paswordController.text,
-      );
-    } catch (e) {
-      
+    if (_formKey.currentState?.validate() ?? false) {
+      try {
+        getIt<AuthRepository>().signUp(
+          fullName: nameController.text,
+          username: usernameController.text,
+          email: emailController.text,
+          phoneNumber: phoneController.text,
+          password: paswordController.text,
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
+      }
+    } else {
+      print("Form validation error...");
     }
   }
 
