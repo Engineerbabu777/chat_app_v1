@@ -1,3 +1,5 @@
+import 'package:chat_app/data/services/service_locator.dart';
+import 'package:chat_app/logic/cubits/auth/auth_cubit.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -6,6 +8,16 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          InkWell(
+            onTap: () {
+              getIt<AuthCubit>().signOut();
+            },
+            child: Icon(Icons.logout),
+          ),
+        ],
+      ),
       body: Center(
         child: Text(
           "User is AUTHENTICATED",
