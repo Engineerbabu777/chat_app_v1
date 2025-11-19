@@ -20,8 +20,23 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
   }
 
-  void _showContactList(BuildContext context){
-    
+  void _showContactList(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) {
+        return Container(
+          padding: EdgeInsets.all(16),
+          child: Column(
+            children: [
+              Text(
+                "Contacts",
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
