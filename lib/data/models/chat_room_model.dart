@@ -7,8 +7,8 @@ class ChatRoomModel {
   final String? lastMessageSenderId;
   final String? lastMessageTime;
   final Timestamp? lastRead;
-  final Map<String, Timestamp>? lastReadTime;
-  final Map<String, String>? participantsName;
+  final Map<String, Timestamp> lastReadTime;
+  final Map<String, String> participantsName;
   final bool isTyping;
   final String? isTypingUserId;
   final bool isCallActive;
@@ -20,12 +20,13 @@ class ChatRoomModel {
     this.lastMessageSenderId,
     this.lastMessageTime,
     this.lastRead,
-    this.lastReadTime,
-    this.participantsName,
+    Map<String, Timestamp>? lastReadTime,
+    Map<String, String>? participantsName,
     this.isTyping = false,
     this.isTypingUserId,
     this.isCallActive = false,
-  });
+  }) : lastReadTime = lastReadTime ?? {},
+       participantsName = participantsName ?? {};
 
   ChatRoomModel copyWith({
     String? id,
