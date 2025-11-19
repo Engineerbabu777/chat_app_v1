@@ -25,4 +25,30 @@ class UserModel {
     this.blockedUsers = const [],
   }) : lastSeen = lastSeen ?? Timestamp.now(),
        createdAt = createdAt ?? Timestamp.now();
+
+  UserModel copyWith({
+    String? uid,
+    String? username,
+    String? email,
+    String? fullName,
+    String? phoneNumber,
+    bool? isOnline,
+    Timestamp? lastSeen,
+    Timestamp? createdAt,
+    String? fcmToken,
+    List<String>? blockedUsers,
+  }) {
+    return UserModel(
+      uid: uid ?? this.uid,
+      username: username ?? this.username,
+      email: email ?? this.email,
+      fullName: fullName ?? this.fullName,
+      phoneNumber: phoneNumber ?? this.phoneNumber,
+      isOnline: isOnline ?? this.isOnline,
+      lastSeen: lastSeen ?? this.lastSeen,
+      createdAt: createdAt ?? this.createdAt,
+      fcmToken: fcmToken ?? this.fcmToken,
+      blockedUsers: blockedUsers ?? List.from(this.blockedUsers),
+    );
+  }
 }
