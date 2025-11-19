@@ -4,4 +4,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 abstract class BaseRepository {
   final FirebaseAuth auth = FirebaseAuth.instance;
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+  User? get currentUser => auth.currentUser;
+  String? get currentUserUid => auth.currentUser!.uid;
+  bool? get isAuthenticated => auth.currentUser != null;
 }
