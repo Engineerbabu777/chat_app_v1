@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:chat_app/data/models/user_model.dart';
 import 'package:chat_app/data/services/base_repository.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepository extends BaseRepository {
   Future<UserModel> signUp({
@@ -38,11 +39,44 @@ class AuthRepository extends BaseRepository {
     }
   }
 
+  Future<UserModel> signIn({
+    required String email,
+    required String password,
+  }) async {
+    try {
+      final loggedInUser = await auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+
+      if (loggedInUser.user == null) {
+        throw "Invalid credentials";
+      }
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
+
   Future<void> saveUserData(UserModel user) async {
     try {
       await firestore.collection("users").doc(user.uid).set(user.toMap());
     } catch (e) {
       throw "Failed to save user data";
+    }
+  }
+
+  Future<UserModel> getUserData(String uid) async {
+    try {
+      final doc = await firestore.collection("users").doc(uid).get();
+
+      if (!doc.exists) {
+        throw "User data not found";
+      }
+
+      return UserModel.fromFirestore(doc);
+    } catch (e) {
+      throw "Failed to fetch user data";
     }
   }
 }
