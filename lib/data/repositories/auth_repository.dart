@@ -121,4 +121,18 @@ class AuthRepository extends BaseRepository {
       return false;
     }
   }
+
+  Future<bool> checkEmailExists(String email) async {
+    try {
+      final querySnapshot = await firestore
+          .collection("users")
+          .where("email", isEqualTo: email)
+          .get();
+
+      return querySnapshot.docs.isNotEmpty;
+    } catch (e) {
+      print("Error checking email: $e");
+      return false;
+    }
+  }
 }
