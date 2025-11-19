@@ -52,6 +52,10 @@ class AuthRepository extends BaseRepository {
       if (loggedInUser.user == null) {
         throw "Invalid credentials";
       }
+
+      final userData = await getUserData(loggedInUser.user!.uid);
+
+      return userData;
     } catch (e) {
       log(e.toString());
       rethrow;
