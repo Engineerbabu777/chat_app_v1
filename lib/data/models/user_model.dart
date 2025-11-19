@@ -18,10 +18,11 @@ class UserModel {
     required this.email,
     required this.fullName,
     required this.phoneNumber,
-    required this.isOnline,
-    required this.lastSeen,
-    required this.createdAt,
+    this.isOnline = false,
+    Timestamp? lastSeen,
+    Timestamp? createdAt,
     required this.fcmToken,
-    required this.blockedUsers,
-  });
+    this.blockedUsers = const [],
+  }) : lastSeen = lastSeen ?? Timestamp.now(),
+       createdAt = createdAt ?? Timestamp.now();
 }
