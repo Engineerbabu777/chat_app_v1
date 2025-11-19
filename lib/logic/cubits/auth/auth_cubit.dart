@@ -75,7 +75,17 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(state.copyWith(status: AuthStatus.authenticated, user: user));
     } catch (e) {
-      emit(state.copyWith(error: e.toString()));
+      if (e.toString().contains(
+        "The email address is already in use by another account",
+      )) {
+        emit(
+          state.copyWith(
+            error: "The email is already in use. Try, different email.",
+          ),
+        );
+      } else {
+        emit(state.copyWith(error: e.toString()));
+      }
     }
   }
 

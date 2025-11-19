@@ -109,6 +109,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
           password: paswordController.text,
         );
       } catch (e) {
+        print(e.toString());
+        print("TESINFG:");
         ScaffoldMessenger.of(
           context,
         ).showSnackBar(SnackBar(content: Text(e.toString())));

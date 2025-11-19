@@ -17,6 +17,7 @@ class HomeScreen extends StatelessWidget {
             child: Icon(Icons.logout),
           ),
         ],
+        actionsPadding: EdgeInsets.symmetric(horizontal: 20),
       ),
       body: Center(
         child: Text(

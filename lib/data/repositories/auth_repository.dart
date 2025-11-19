@@ -40,6 +40,8 @@ class AuthRepository extends BaseRepository {
 
       return user;
     } catch (e) {
+      print(e.toString());
+
       log(e.toString());
       rethrow;
     }
@@ -63,7 +65,7 @@ class AuthRepository extends BaseRepository {
 
       final userData = await getUserData(loggedInUser.user!.uid);
 
-      print(userData.uid);
+      log(userData.uid);
 
       return userData;
     } catch (e) {
@@ -99,6 +101,24 @@ class AuthRepository extends BaseRepository {
       return UserModel.fromFirestore(doc);
     } catch (e) {
       throw "Failed to fetch user data";
+    }
+  }
+
+  Future<bool> checkPhoneExists(String phoneNumber) async {
+    try {
+      final formattedPhoneNumber = phoneNumber.replaceAll(
+        RegExp(r'\s+'),
+        "".trim(),
+      );
+      final querySnapshot = await firestore
+          .collection("users")
+          .where("phoneNumber", isEqualTo: formattedPhoneNumber)
+          .get();
+
+      return querySnapshot.docs.isNotEmpty;
+    } catch (e) {
+      print("Error checking email: $e");
+      return false;
     }
   }
 }
