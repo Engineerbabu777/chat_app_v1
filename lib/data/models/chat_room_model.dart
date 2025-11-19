@@ -55,4 +55,22 @@ class ChatRoomModel {
       isCallActive: isCallActive ?? this.isCallActive,
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "id": id,
+      "participants": participants,
+      "lastMessage": lastMessage,
+      "lastMessageSenderId": lastMessageSenderId,
+      "lastMessageTime": lastMessageTime,
+      "lastRead": lastRead,
+      "lastReadTime": lastReadTime.map((key, value) => MapEntry(key, value)),
+      "participantsName": participantsName.map(
+        (key, value) => MapEntry(key, value),
+      ),
+      "isTyping": isTyping,
+      "isTypingUserId": isTypingUserId,
+      "isCallActive": isCallActive,
+    };
+  }
 }
