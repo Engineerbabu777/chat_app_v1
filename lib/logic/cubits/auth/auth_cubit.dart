@@ -75,4 +75,8 @@ class AuthCubit extends Cubit<AuthState> {
       emit(state.copyWith(error: e.toString()));
     }
   }
+
+  Future<void> signOut() async {
+    emit(state.copyWith(status: AuthStatus.unauthenticated, user: null));
+  }
 }
