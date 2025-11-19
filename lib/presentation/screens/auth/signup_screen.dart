@@ -221,7 +221,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       style: TextStyle(color: Colors.grey[600]),
                       children: [
                         TextSpan(
-                          text: "SignUp",
+                          text: "SignIn",
                           style: Theme.of(context).textTheme.bodyLarge
                               ?.copyWith(
                                 color: Theme.of(context).primaryColor,

@@ -1,5 +1,6 @@
 import 'package:chat_app/data/repositories/auth_repository.dart';
 import 'package:chat_app/firebase_options.dart';
+import 'package:chat_app/logic/cubits/auth/auth_cubit.dart';
 import 'package:chat_app/router/app_router.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -24,4 +25,8 @@ Future<void> setupServiceLocator() async {
   );
 
   getIt.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
+
+  getIt.registerLazySingleton(
+    () => AuthCubit(authRepository: AuthRepository()),
+  );
 }

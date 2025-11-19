@@ -50,6 +50,8 @@ class AuthRepository extends BaseRepository {
     required String password,
   }) async {
     try {
+      print("Hello");
+
       final loggedInUser = await auth.signInWithEmailAndPassword(
         email: email,
         password: password,
@@ -60,6 +62,8 @@ class AuthRepository extends BaseRepository {
       }
 
       final userData = await getUserData(loggedInUser.user!.uid);
+
+      print(userData.uid);
 
       return userData;
     } catch (e) {
