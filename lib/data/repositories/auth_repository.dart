@@ -76,6 +76,14 @@ class AuthRepository extends BaseRepository {
     }
   }
 
+  Future<void> signOut() async {
+    try {
+      await auth.signOut();
+    } catch (e) {
+      throw "Failed to signout";
+    }
+  }
+
   Future<UserModel> getUserData(String uid) async {
     try {
       final doc = await firestore.collection("users").doc(uid).get();
