@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print
+
 import 'dart:developer';
 
 import 'package:chat_app/data/models/user_model.dart';
@@ -19,6 +21,17 @@ class AuthRepository extends BaseRepository {
         RegExp(r'\+'),
         "".trim(),
       );
+
+      final isEmailExists = await checkEmailExists(email);
+      if (isEmailExists) {
+        throw ("Email already in use.");
+      }
+
+      final isPhoneExists = await checkPhoneExists(formattedPhoneNumber);
+      if (isPhoneExists) {
+        throw ("Phone Number already in use.");
+      }
+
       final userCredentials = await auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -117,7 +130,7 @@ class AuthRepository extends BaseRepository {
 
       return querySnapshot.docs.isNotEmpty;
     } catch (e) {
-      print("Error checking email: $e");
+      print("Error checking phone number: $e");
       return false;
     }
   }
