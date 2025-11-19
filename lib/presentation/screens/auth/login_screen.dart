@@ -3,6 +3,7 @@
 import 'package:chat_app/core/common/custom_button.dart';
 import 'package:chat_app/core/common/custom_text_field.dart';
 import 'package:chat_app/data/services/service_locator.dart';
+import 'package:chat_app/logic/cubits/auth/auth_cubit.dart';
 import 'package:chat_app/presentation/screens/auth/signup_screen.dart';
 import 'package:chat_app/router/app_router.dart';
 import 'package:flutter/gestures.dart';
@@ -55,6 +56,24 @@ class _LoginScreenState extends State<LoginScreen> {
     _passwordFocus.dispose();
 
     super.dispose();
+  }
+
+  Future<void> handleSignIn() async {
+    FocusScope.of(context).unfocus();
+    if (_formKey.currentState?.validate() ?? false) {
+      try {
+        getIt<AuthCubit>().signIn(
+          email: emailController.text,
+          password: passwordCOntroller.text,
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text(e.toString())));
+      }
+    } else {
+      print("Form validation error...");
+    }
   }
 
   @override
@@ -121,8 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
                 CustomButton(
                   onPressed: () {
-                    FocusScope.of(context).unfocus();
-                    if (_formKey.currentState?.validate() ?? false) {}
+                    handleSignIn();
                   },
                   text: 'Login',
                 ),
