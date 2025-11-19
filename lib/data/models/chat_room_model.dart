@@ -26,4 +26,32 @@ class ChatRoomModel {
     this.isTypingUserId,
     this.isCallActive = false,
   });
+
+  ChatRoomModel copyWith({
+    String? id,
+    List<String>? participants,
+    String? lastMessage,
+    String? lastMessageSenderId,
+    String? lastMessageTime,
+    Timestamp? lastRead,
+    Map<String, Timestamp>? lastReadTime,
+    Map<String, String>? participantsName,
+    bool? isTyping,
+    String? isTypingUserId,
+    bool? isCallActive,
+  }) {
+    return ChatRoomModel(
+      id: id ?? this.id,
+      participants: participants ?? this.participants,
+      lastMessage: lastMessage ?? this.lastMessage,
+      lastMessageSenderId: lastMessageSenderId ?? this.lastMessageSenderId,
+      lastMessageTime: lastMessageTime ?? this.lastMessageTime,
+      lastRead: lastRead ?? this.lastRead,
+      lastReadTime: lastReadTime ?? this.lastReadTime,
+      participantsName: participantsName ?? this.participantsName,
+      isTyping: isTyping ?? this.isTyping,
+      isTypingUserId: isTypingUserId ?? this.isTypingUserId,
+      isCallActive: isCallActive ?? this.isCallActive,
+    );
+  }
 }
