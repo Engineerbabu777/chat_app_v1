@@ -51,4 +51,19 @@ class UserModel {
       blockedUsers: blockedUsers ?? List.from(this.blockedUsers),
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'uid': uid,
+      'username': username,
+      'email': email,
+      'fullName': fullName,
+      'phoneNumber': phoneNumber,
+      'isOnline': isOnline,
+      'lastSeen': lastSeen,
+      'createdAt': createdAt,
+      'fcmToken': fcmToken,
+      'blockedUsers': blockedUsers,
+    };
+  }
 }
