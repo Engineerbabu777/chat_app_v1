@@ -5,6 +5,13 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Text("This is home screen"));
+    return Scaffold(
+      body: Center(
+        child: Text(
+          "User is AUTHENTICATED",
+          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.brown),
+        ),
+      ),
+    );
   }
 }
