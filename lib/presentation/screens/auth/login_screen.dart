@@ -157,6 +157,16 @@ class _LoginScreenState extends State<LoginScreen> {
                       handleSignIn();
                     },
                     text: 'Login',
+                    child: state.status == AuthStatus.loading
+                        ? SizedBox(
+                            width: 20, // width of the spinner
+                            height: 20, // height of the spinner
+                            child: CircularProgressIndicator(
+                              color: Colors.white,
+                              strokeWidth: 2, // makes the line thinner
+                            ),
+                          )
+                        : Text("Login", style: TextStyle(color: Colors.white)),
                   ),
 
                   SizedBox(height: 15),

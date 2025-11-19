@@ -226,7 +226,19 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       onPressed: () {
                         handleSignUp();
                       },
-                      text: "Create Account",
+                      child: state.status == AuthStatus.loading
+                          ? SizedBox(
+                              width: 20, // width of the spinner
+                              height: 20, // height of the spinner
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2, // makes the line thinner
+                              ),
+                            )
+                          : Text(
+                              "Create Account",
+                              style: TextStyle(color: Colors.white),
+                            ),
                     ),
 
                     SizedBox(height: 15),
