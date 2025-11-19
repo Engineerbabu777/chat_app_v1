@@ -1,10 +1,11 @@
-// ignore_for_file: unused_field
+// ignore_for_file: unused_field, avoid_print
 
 import 'package:chat_app/core/common/custom_button.dart';
 import 'package:chat_app/core/common/custom_text_field.dart';
 import 'package:chat_app/data/services/service_locator.dart';
 import 'package:chat_app/logic/cubits/auth/auth_cubit.dart';
 import 'package:chat_app/logic/cubits/auth/auth_state.dart';
+import 'package:chat_app/presentation/home/home_screen.dart';
 import 'package:chat_app/presentation/screens/auth/signup_screen.dart';
 import 'package:chat_app/router/app_router.dart';
 import 'package:flutter/gestures.dart';
@@ -86,8 +87,10 @@ class _LoginScreenState extends State<LoginScreen> {
       listener: (context, state) {
         if (state.status == AuthStatus.authenticated) {
           // ROUTE TO HOME SCREEN!
+          getIt<AppRouter>().pushAndRemoveUntil(HomeScreen());
         }
       },
+      bloc: getIt<AuthCubit>(),
       child: Scaffold(
         body: SafeArea(
           child: Padding(
