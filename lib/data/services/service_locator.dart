@@ -13,6 +13,8 @@ Future<void> setupServiceLocator() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
+  // SO WE DON'T NEED TO CREATE NEW INSTANCE EACH TIME OR WRITING TOO MUCH CODE AGAIN AND AGAIN;
+
   getIt.registerLazySingleton(() => AppRouter());
 
   getIt.registerLazySingleton(() => AuthRepository());
