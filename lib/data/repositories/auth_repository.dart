@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:chat_app/data/models/user_model.dart';
 import 'package:chat_app/data/services/base_repository.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepository extends BaseRepository {
   Future<UserModel> signUp({
