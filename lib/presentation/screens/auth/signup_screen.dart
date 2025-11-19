@@ -2,6 +2,8 @@
 
 import 'package:chat_app/core/common/custom_button.dart';
 import 'package:chat_app/core/common/custom_text_field.dart';
+import 'package:chat_app/data/repositories/auth_repository.dart';
+import 'package:chat_app/data/services/service_locator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
@@ -89,6 +91,23 @@ class _SignUpScreenState extends State<SignUpScreen> {
     _passwordFocus.dispose();
 
     super.dispose();
+  }
+
+  Future<void> handleSignUp() async {
+    FocusScope.of(context).unfocus();
+    if (_formKey.currentState?.validate() ?? false) {}
+
+    try {
+      getIt<AuthRepository>().signUp(
+        fullName: nameController.text,
+        username: usernameController.text,
+        email: emailController.text,
+        phoneNumber: phoneController.text,
+        password: paswordController.text,
+      );
+    } catch (e) {
+      
+    }
   }
 
   @override
@@ -183,8 +202,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                 CustomButton(
                   onPressed: () {
-                    FocusScope.of(context).unfocus();
-                    if (_formKey.currentState?.validate() ?? false) {}
+                    handleSignUp();
                   },
                   text: "Create Account",
                 ),
@@ -198,7 +216,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       style: TextStyle(color: Colors.grey[600]),
                       children: [
                         TextSpan(
-                          text: "Login",
+                          text: "SignUp",
                           style: Theme.of(context).textTheme.bodyLarge
                               ?.copyWith(
                                 color: Theme.of(context).primaryColor,
