@@ -32,6 +32,40 @@ class _HomeScreenState extends State<HomeScreen> {
                 "Contacts",
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
+              Expanded(
+                child: FutureBuilder<List<Map<String, dynamic>>>(
+                  future: _contactRepository.getRegisteredContacts(),
+                  builder: (context, snapshot) {
+                    if (snapshot.hasError) {
+                      return Center(child: Text("Error: ${snapshot.error}"));
+                    }
+
+                    if (!snapshot.hasData) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    final contacts = snapshot.data!;
+                    if (contacts.isEmpty) {
+                      return const Center(child: Text("No contacts found!"));
+                    }
+
+                    return ListView.builder(
+                      itemBuilder: (context, index) {
+                        final contact = contacts[index];
+                        return ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Theme.of(
+                              context,
+                            ).primaryColor.withOpacity(0.1),
+                            child: Text(contact["name"][0].toUpperCase()),
+                          ),
+                          title: Text(contact["name"]),
+                        );
+                      },
+                      itemCount: contacts.length,
+                    );
+                  },
+                ),
+              ),
             ],
           ),
         );
@@ -61,7 +95,9 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {},
+        onPressed: () {
+          _showContactList(context);
+        },
         backgroundColor: AppTheme.primaryColor,
         child: const Icon(Icons.chat, color: Colors.white),
       ),
