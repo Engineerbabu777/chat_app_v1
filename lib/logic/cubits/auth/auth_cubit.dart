@@ -51,7 +51,7 @@ class AuthCubit extends Cubit<AuthState> {
 
       emit(state.copyWith(status: AuthStatus.authenticated, user: user));
     } catch (e) {
-      emit(state.copyWith(error: e.toString()));
+      emit(state.copyWith(error: e.toString(), status: AuthStatus.error));
     }
   }
 
@@ -84,7 +84,7 @@ class AuthCubit extends Cubit<AuthState> {
           ),
         );
       } else {
-        emit(state.copyWith(error: e.toString()));
+        emit(state.copyWith(error: e.toString(), status: AuthStatus.error));
       }
     }
   }
@@ -95,7 +95,7 @@ class AuthCubit extends Cubit<AuthState> {
       emit(state.copyWith(status: AuthStatus.unauthenticated, user: null));
       getIt<AppRouter>().pushAndRemoveUntil(LoginScreen());
     } catch (e) {
-      emit(state.copyWith(error: e.toString()));
+      emit(state.copyWith(error: e.toString(), status: AuthStatus.error));
     }
   }
 }
