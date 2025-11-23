@@ -55,4 +55,28 @@ class ChatMessageModel {
       "readBy": readBy,
     };
   }
+
+  ChatMessageModel copyWith({
+    String? id,
+    String? chatRoomId,
+    String? senderId,
+    String? receiverId,
+    String? content,
+    MessageType? type,
+    MessageStatus? status,
+    Timestamp? timestamp,
+    List<String>? readBy,
+  }) {
+    return ChatMessageModel(
+      id: id ?? this.id,
+      chatRoomId: chatRoomId ?? this.chatRoomId,
+      senderId: senderId ?? this.senderId,
+      receiverId: receiverId ?? this.receiverId,
+      content: content ?? this.content,
+      type: type ?? this.type,
+      status: status ?? this.status,
+      timestamp: timestamp ?? this.timestamp,
+      readBy: readBy ?? this.readBy,
+    );
+  }
 }
