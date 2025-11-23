@@ -6,10 +6,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ChatRepository extends BaseRepository {
   CollectionReference get _chatRooms => firestore.collection("chatRooms");
 
-  CollectionReference getChatRoomMessagesCollection(String chatRoomId){
-    return _chatRooms.doc(chatRoomId).collection("messages")
-  };
-
+  CollectionReference getChatRoomMessagesCollection(String chatRoomId) {
+    return _chatRooms.doc(chatRoomId).collection("messages");
+  }
 
   Future<ChatRoomModel> getOrCreateChatRoom(
     String currentUserId,
@@ -50,27 +49,42 @@ class ChatRepository extends BaseRepository {
     return newRoom;
   }
 
-
   Future<void> sendMessage(
     String chatRoomId,
-    String senderid,
-    String receiverId
-    required String content,
+    String senderId,
+    String receiverId,
+    String content, {
     MessageType type = MessageType.text,
-  )async{
-
+  }) async {
     // batch!
     final batch = firestore.batch();
 
     // get message sub collection!
-    
+    final messageRef = getChatRoomMessagesCollection(chatRoomId);
+    final messageDoc = messageRef.doc();
 
     // message!
+    final message = ChatMessageModel(
+      id: messageRef.id,
+      chatRoomId: chatRoomId,
+      senderId: senderId,
+      receiverId: receiverId,
+      content: content,
+      timestamp: Timestamp.now(),
+      readBy: [senderId],
+    );
 
     // message to sub collection!
+    batch.set(messageDoc, message);
 
     // update chat room!
+    batch.update(_chatRooms.doc(chatRoomId), {
+      "lastMessage": content,
+      "lastMessageTime": message.timestamp,
+      "lastMessageSenderId": senderId,
+    });
 
     // commit
+    await batch.commit();
   }
 }
