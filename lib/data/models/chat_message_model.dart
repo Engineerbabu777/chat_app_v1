@@ -42,4 +42,17 @@ class ChatMessageModel {
       readBy: List<String>.from(data["readBy"] ?? []),
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "chatRoomId": chatRoomId,
+      "senderId": senderId,
+      "receiverId": receiverId,
+      "content": content,
+      "type": type.index, // store enum as int
+      "status": status.index, // store enum as int
+      "timestamp": timestamp,
+      "readBy": readBy,
+    };
+  }
 }
