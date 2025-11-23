@@ -1,5 +1,3 @@
-import 'package:flutter/material.dart';
-
 import 'package:equatable/equatable.dart';
 
 enum ChatStatus { initial, loading, loaded, error }
@@ -25,7 +23,7 @@ class ChatState extends Equatable {
   }) {
     return ChatState(
       status: status ?? this.status,
-      error: error != null ? error() : this.error,
+      error: error ?? this.error,
       receiverId: receiverId ?? this.receiverId,
       chatRoomId: chatRoomId ?? this.chatRoomId,
     );
