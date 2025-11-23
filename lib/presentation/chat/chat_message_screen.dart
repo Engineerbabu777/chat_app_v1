@@ -1,4 +1,5 @@
 import 'package:chat_app/data/models/chat_message_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ChatMessageScreen extends StatefulWidget {
@@ -45,7 +46,29 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
           ),
         ],
       ),
-      body: Scaffold(),
+      body: Column(
+        children: [
+          Expanded(
+            child: ListView.builder(
+              itemCount: 4,
+              itemBuilder: (BuildContext context, int index) {
+                return MessageBubble(
+                  message: ChatMessageModel(
+                    id: "8888",
+                    chatRoomId: "XXXX",
+                    senderId: "VVXVXVVX",
+                    receiverId: "XJHGXJHG",
+                    content: "Hello this is my first message",
+                    timestamp: Timestamp.now(),
+                    readBy: [],
+                  ),
+                  isMe: true,
+                );
+              },
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
@@ -61,8 +84,45 @@ class MessageBubble extends StatelessWidget {
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
-        margin: EdgeInsets.only(left: isMe ? 64 : 8, right: isMe ? 8 : 64),
-        child: Column(children: [Text(message.content), Text("4:34 AM")]),
+        decoration: BoxDecoration(
+          color: isMe
+              ? Theme.of(context).primaryColor
+              : Theme.of(context).primaryColor.withOpacity(0.1),
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        margin: EdgeInsets.only(
+          left: isMe ? 64 : 8,
+          right: isMe ? 8 : 64,
+          bottom: 4,
+        ),
+        child: Column(
+          crossAxisAlignment: isMe
+              ? CrossAxisAlignment.end
+              : CrossAxisAlignment.start,
+          children: [
+            Text(
+              message.content,
+              style: TextStyle(color: isMe ? Colors.white : Colors.black),
+            ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "4:34 AM",
+                  style: TextStyle(color: isMe ? Colors.white : Colors.black),
+                ),
+                Icon(
+                  Icons.done_all,
+                  size: 20,
+                  color: message.status == MessageStatus.read
+                      ? Colors.green
+                      : Colors.red,
+                ),
+              ],
+            ),
+          ],
+        ),
       ),
     );
   }
