@@ -18,6 +18,7 @@ class ChatMessageScreen extends StatefulWidget {
 class _ChatMessageScreenState extends State<ChatMessageScreen> {
   final TextEditingController _sendMessageController = TextEditingController();
   final FocusNode _inputFocusNode = FocusNode();
+  
 
   @override
   void initState() {
