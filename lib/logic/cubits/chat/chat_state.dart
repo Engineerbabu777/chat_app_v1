@@ -19,7 +19,7 @@ class ChatState extends Equatable {
 
   ChatState copyWith({
     ChatStatus? status,
-    ValueGetter<String?>? error,
+    String? error,
     String? receiverId,
     String? chatRoomId,
   }) {
