@@ -16,6 +16,7 @@ class ChatMessageScreen extends StatefulWidget {
 }
 
 class _ChatMessageScreenState extends State<ChatMessageScreen> {
+  final TextEditingController _sendMessageController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,6 +66,47 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
                   isMe: false,
                 );
               },
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.emoji_emotions_outlined),
+                ),
+
+                // TextField (CENTER)
+                Expanded(
+                  child: TextField(
+                    controller: _sendMessageController,
+                    keyboardType: TextInputType.multiline,
+                    maxLines: null,
+                    textCapitalization: TextCapitalization.sentences,
+                    decoration: InputDecoration(
+                      hintText: "Type a message",
+                      filled: true,
+                      fillColor: Theme.of(context).cardColor,
+                      contentPadding: EdgeInsets.symmetric(
+                        horizontal: 12,
+                        vertical: 10,
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide.none,
+                      ),
+                    ),
+                  ),
+                ),
+
+                IconButton(
+                  onPressed: () {},
+                  icon: Icon(Icons.send),
+                  color: Theme.of(context).primaryColor,
+                ),
+              ],
             ),
           ),
         ],
