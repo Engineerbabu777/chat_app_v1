@@ -58,6 +58,12 @@ class MessageBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Align(
+      alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
+      child: Container(
+        margin: EdgeInsets.only(left: isMe ? 64 : 8, right: isMe ? 8 : 64),
+        child: Column(children: [Text(message.content), Text("4:34 AM")]),
+      ),
+    );
   }
 }
