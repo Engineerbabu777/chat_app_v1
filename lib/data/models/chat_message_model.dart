@@ -26,4 +26,20 @@ class ChatMessageModel {
     required this.timestamp,
     required this.readBy,
   });
+
+  factory ChatMessageModel.fromFirestore(DocumentSnapshot doc) {
+    final data = doc.data() as Map<String, dynamic>;
+
+    return ChatMessageModel(
+      id: doc.id,
+      chatRoomId: data["chatRoomId"] ?? "",
+      senderId: data["senderId"] ?? "",
+      receiverId: data["receiverId"] ?? "",
+      content: data["content"] ?? "",
+      type: MessageType.values[data["type"] ?? 0],
+      status: MessageStatus.values[data["status"] ?? 0],
+      timestamp: data["timestamp"] ?? Timestamp.now(),
+      readBy: List<String>.from(data["readBy"] ?? []),
+    );
+  }
 }
