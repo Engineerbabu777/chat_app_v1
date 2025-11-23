@@ -17,6 +17,23 @@ class ChatMessageScreen extends StatefulWidget {
 
 class _ChatMessageScreenState extends State<ChatMessageScreen> {
   final TextEditingController _sendMessageController = TextEditingController();
+  final FocusNode _inputFocusNode = FocusNode();
+
+  @override
+  void initState() {
+    super.initState();
+    _inputFocusNode.addListener(() {
+      setState(() {}); // rebuild when focus changes
+    });
+  }
+
+  @override
+  void dispose() {
+    _inputFocusNode.dispose();
+    _sendMessageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -75,7 +92,10 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
               children: [
                 IconButton(
                   onPressed: () {},
-                  icon: Icon(Icons.emoji_emotions_outlined),
+                  icon: Icon(
+                    Icons.emoji_emotions_outlined,
+                    color: Theme.of(context).primaryColor,
+                  ),
                 ),
 
                 // TextField (CENTER)
@@ -93,9 +113,16 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
                         horizontal: 12,
                         vertical: 10,
                       ),
-                      border: OutlineInputBorder(
+                      enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
+                        borderSide: BorderSide(color: Colors.grey.shade300),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(
+                          color: Theme.of(context).primaryColor,
+                          width: 2,
+                        ),
                       ),
                     ),
                   ),
@@ -104,7 +131,9 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
                 IconButton(
                   onPressed: () {},
                   icon: Icon(Icons.send),
-                  color: Theme.of(context).primaryColor,
+                  color: _sendMessageController.text.trim().isNotEmpty
+                      ? Theme.of(context).primaryColor
+                      : Colors.grey,
                 ),
               ],
             ),
