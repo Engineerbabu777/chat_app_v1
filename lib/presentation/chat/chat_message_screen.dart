@@ -112,13 +112,14 @@ class MessageBubble extends StatelessWidget {
                   "4:34 AM",
                   style: TextStyle(color: isMe ? Colors.white : Colors.black),
                 ),
-                Icon(
-                  Icons.done_all,
-                  size: 20,
-                  color: message.status == MessageStatus.read
-                      ? Colors.green
-                      : Colors.red,
-                ),
+                if (isMe)
+                  Icon(
+                    Icons.done_all,
+                    size: 20,
+                    color: message.status == MessageStatus.read
+                        ? Colors.green
+                        : Colors.red,
+                  ),
               ],
             ),
           ],
