@@ -62,7 +62,7 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
                     timestamp: Timestamp.now(),
                     readBy: [],
                   ),
-                  isMe: true,
+                  isMe: false,
                 );
               },
             ),
