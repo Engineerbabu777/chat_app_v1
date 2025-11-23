@@ -2,6 +2,9 @@ import 'package:chat_app/config/theme/app_theme.dart';
 import 'package:chat_app/data/repositories/contact_repository.dart';
 import 'package:chat_app/data/services/service_locator.dart';
 import 'package:chat_app/logic/cubits/auth/auth_cubit.dart';
+import 'package:chat_app/logic/cubits/auth/auth_state.dart';
+import 'package:chat_app/presentation/chat/chat_message_screen.dart';
+import 'package:chat_app/router/app_router.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -59,6 +62,12 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Text(contact["name"][0].toUpperCase()),
                           ),
                           title: Text(contact["name"]),
+                          onTap: () => getIt<AppRouter>().push(
+                            ChatMessageScreen(
+                              receiverId: contact["id"],
+                              receiverName: contact["name"],
+                            ),
+                          ),
                         );
                       },
                       itemCount: contacts.length,
