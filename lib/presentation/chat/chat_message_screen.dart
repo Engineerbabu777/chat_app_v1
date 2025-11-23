@@ -1,3 +1,4 @@
+import 'package:chat_app/data/models/chat_message_model.dart';
 import 'package:flutter/material.dart';
 
 class ChatMessageScreen extends StatefulWidget {
@@ -44,6 +45,19 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
           ),
         ],
       ),
+      body: Scaffold(),
     );
+  }
+}
+
+class MessageBubble extends StatelessWidget {
+  final ChatMessageModel message;
+  final bool isMe;
+
+  const MessageBubble({super.key, required this.message, required this.isMe});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container();
   }
 }
