@@ -100,18 +100,10 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
                 child: ListView.builder(
                   itemCount: state.messages.length,
                   itemBuilder: (BuildContext context, int index) {
-                    return MessageBubble(
-                      message: ChatMessageModel(
-                        id: "8888",
-                        chatRoomId: "XXXX",
-                        senderId: "VVXVXVVX",
-                        receiverId: "XJHGXJHG",
-                        content: "Hello this is my first message",
-                        timestamp: Timestamp.now(),
-                        readBy: [],
-                      ),
-                      isMe: false,
-                    );
+                    final message = state.messages[index];
+                    final isMe = message.senderId == _chatCubit.currentUserId;
+
+                    return MessageBubble(message: message, isMe: isMe);
                   },
                 ),
               ),
