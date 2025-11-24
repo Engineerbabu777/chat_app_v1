@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chat_app/data/models/chat_message_model.dart';
 import 'package:chat_app/data/models/chat_room_model.dart';
 import 'package:chat_app/data/services/base_repository.dart';
@@ -142,5 +144,28 @@ class ChatRepository extends BaseRepository {
         .where("status", isEqualTo: MessageStatus.sent.toString())
         .snapshots()
         .map((snapshot) => snapshot.docs.length);
+  }
+
+  Future<void> markMessagesAsRead(String chatRoomId, String userId) async {
+    try {
+      final batch = firestore.batch();
+
+      final unreadMessages = await getChatRoomMessagesCollection(chatRoomId)
+          .where("receiverId", isEqualTo: userId)
+          .where("status", isEqualTo: MessageStatus.sent.toString())
+          .get();
+
+      for (final doc in unreadMessages.docs) {
+        batch.update(doc.reference, {
+          "readBy": FieldValue.arrayUnion([userId]),
+          "status": MessageStatus.read.toString(),
+        });
+      }
+
+      batch.commit();
+    } catch (e) {
+      print(e.toString());
+      log(e.toString());
+    }
   }
 }
