@@ -84,6 +84,14 @@ class ChatCubit extends Cubit<ChatState> {
         );
   }
 
+  Future<void> _markMessagesAsRead(String chatRoomId) async {
+    try {
+      await _chatRepository.markMessagesAsRead(chatRoomId, currentUserId);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   @override
   Future<void> close() {
     _messagesSubscription?.cancel();
