@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:chat_app/data/models/chat_message_model.dart';
 import 'package:chat_app/data/models/chat_room_model.dart';
 import 'package:chat_app/data/services/base_repository.dart';
@@ -87,5 +89,24 @@ class ChatRepository extends BaseRepository {
 
     // commit
     await batch.commit();
+  }
+
+  Stream<List<ChatMessageModel>> getMessages(
+    String roomId, {
+    DocumentSnapshot? lastDocument,
+  }) {
+    var query = getChatRoomMessagesCollection(
+      roomId,
+    ).orderBy('timestamp', descending: true).limit(20);
+
+    if (lastDocument != null) {
+      query = query.startAfterDocument(lastDocument);
+    }
+
+    return query.snapshots().map(
+      (snapshot) => snapshot.docs
+          .map((doc) => ChatMessageModel.fromFirestore(doc))
+          .toList(),
+    );
   }
 }
