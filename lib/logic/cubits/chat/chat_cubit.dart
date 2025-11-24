@@ -246,6 +246,34 @@ class ChatCubit extends Cubit<ChatState> {
         );
   }
 
+  Future<void> loadMoreMessages() async {
+    if (state.status != ChatStatus.loaded ||
+        state.messages.isEmpty ||
+        !state.hasMoreMessages ||
+        state.isLoadingMore) {
+      return;
+    }
+
+    try {
+      emit(state.copyWith(isLoadingMore: true));
+
+      final lastMessage = state.messages.last;
+      final lastDoc = await _chatRepository
+          .getChatRoomMessagesCollection(state.chatRoomId!)
+          .doc(lastMessage.id)
+          .get();
+
+      final moreMessages = await _chatRepository.getMoreMessages(
+        state.chatRoomId!,
+        lastDocument: lastDoc,
+      );
+
+      if (moreMessages.isEmpty) {
+        emit(state.copyWith(hasMoreMessages: false, isLoadingMore: false));
+      }
+    } catch (e) {}
+  }
+
   @override
   Future<void> close() {
     _messagesSubscription?.cancel();
