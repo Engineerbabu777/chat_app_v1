@@ -51,6 +51,7 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
   void dispose() {
     _inputFocusNode.dispose();
     _sendMessageController.dispose();
+    _chatCubit.leaveChat();
     super.dispose();
   }
 
