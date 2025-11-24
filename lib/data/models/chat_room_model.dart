@@ -5,7 +5,7 @@ class ChatRoomModel {
   final List<String> participants;
   final String? lastMessage;
   final String? lastMessageSenderId;
-  final String? lastMessageTime;
+  final Timestamp? lastMessageTime;
   final Timestamp? lastRead;
   final Map<String, Timestamp> lastReadTime;
   final Map<String, String> participantsName;
@@ -33,7 +33,7 @@ class ChatRoomModel {
     List<String>? participants,
     String? lastMessage,
     String? lastMessageSenderId,
-    String? lastMessageTime,
+    Timestamp? lastMessageTime,
     Timestamp? lastRead,
     Map<String, Timestamp>? lastReadTime,
     Map<String, String>? participantsName,
@@ -57,28 +57,37 @@ class ChatRoomModel {
   }
 
   factory ChatRoomModel.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
+    final data = doc.data() as Map<String, dynamic>? ?? {};
 
     return ChatRoomModel(
-      id: data["id"] ?? doc.id,
-      participants: List<String>.from(data["participants"] ?? []),
-      lastMessage: data["lastMessage"],
-      lastMessageSenderId: data["lastMessageSenderId"],
-      lastMessageTime: data["lastMessageTime"],
-      lastRead: data["lastRead"],
+      id: data["id"] as String? ?? doc.id,
+      participants:
+          (data["participants"] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          [],
+      lastMessage: data["lastMessage"] as String?,
+      lastMessageSenderId: data["lastMessageSenderId"] as String?,
+      lastMessageTime: data["lastMessageTime"] is Timestamp
+          ? data["lastMessageTime"] as Timestamp
+          : null,
+      lastRead: data["lastRead"] is Timestamp
+          ? data["lastRead"] as Timestamp
+          : null,
       lastReadTime:
           (data["lastReadTime"] as Map<String, dynamic>?)?.map(
-            (key, value) => MapEntry(key, value as Timestamp),
+            (key, value) =>
+                MapEntry(key, value is Timestamp ? value : Timestamp.now()),
           ) ??
           {},
       participantsName:
           (data["participantsName"] as Map<String, dynamic>?)?.map(
-            (key, value) => MapEntry(key, value as String),
+            (key, value) => MapEntry(key, value.toString()),
           ) ??
           {},
-      isTyping: data["isTyping"] ?? false,
-      isTypingUserId: data["isTypingUserId"],
-      isCallActive: data["isCallActive"] ?? false,
+      isTyping: data["isTyping"] as bool? ?? false,
+      isTypingUserId: data["isTypingUserId"] as String?,
+      isCallActive: data["isCallActive"] as bool? ?? false,
     );
   }
 
@@ -90,10 +99,10 @@ class ChatRoomModel {
       "lastMessageSenderId": lastMessageSenderId,
       "lastMessageTime": lastMessageTime,
       "lastRead": lastRead,
-      "lastReadTime": lastReadTime.map((key, value) => MapEntry(key, value)),
-      "participantsName": participantsName.map(
+      "lastReadTime": lastReadTime.map(
         (key, value) => MapEntry(key, value),
-      ),
+      ), // Timestamp stays Timestamp
+      "participantsName": participantsName,
       "isTyping": isTyping,
       "isTypingUserId": isTypingUserId,
       "isCallActive": isCallActive,

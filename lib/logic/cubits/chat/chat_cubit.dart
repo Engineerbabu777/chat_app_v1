@@ -34,6 +34,7 @@ class ChatCubit extends Cubit<ChatState> {
 
       _subscribeToMessages(chatRoom.id);
     } catch (e) {
+      print(e.toString());
       emit(
         state.copyWith(
           error: "Failed to create or init chat $e",
@@ -62,6 +63,7 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   void _subscribeToMessages(String chatRoomId) {
+    print("Helo");
     _messagesSubscription?.cancel();
 
     _messagesSubscription = _chatRepository

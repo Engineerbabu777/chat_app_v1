@@ -61,12 +61,15 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Text(contact["name"][0].toUpperCase()),
                           ),
                           title: Text(contact["name"]),
-                          onTap: () => getIt<AppRouter>().push(
-                            ChatMessageScreen(
-                              receiverId: contact["id"],
-                              receiverName: contact["name"],
-                            ),
-                          ),
+                          onTap: () {
+                            Navigator.of(context).pop();
+                            getIt<AppRouter>().push(
+                              ChatMessageScreen(
+                                receiverId: contact["id"],
+                                receiverName: contact["name"],
+                              ),
+                            );
+                          },
                         );
                       },
                       itemCount: contacts.length,

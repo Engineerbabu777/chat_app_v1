@@ -98,6 +98,7 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
             children: [
               Expanded(
                 child: ListView.builder(
+                  reverse: true,
                   itemCount: state.messages.length,
                   itemBuilder: (BuildContext context, int index) {
                     final message = state.messages[index];
