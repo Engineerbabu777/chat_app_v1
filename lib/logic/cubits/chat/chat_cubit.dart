@@ -16,6 +16,8 @@ class ChatCubit extends Cubit<ChatState> {
   StreamSubscription? _onlineUsersSubscription;
   StreamSubscription? _typingSubscription;
 
+  Timer? typingTimer;
+
   ChatCubit({
     required ChatRepository chatRepository,
     required this.currentUserId,
