@@ -39,6 +39,7 @@ class ChatCubit extends Cubit<ChatState> {
       );
 
       _subscribeToMessages(chatRoom.id);
+      _subscribeToOnlineUsers(receiverId);
     } catch (e) {
       print(e.toString());
       emit(
@@ -105,15 +106,27 @@ class ChatCubit extends Cubit<ChatState> {
     _isInChat = false;
   }
 
-  void _subscribeToOnlineUsers() async {
+  void _subscribeToOnlineUsers(String userId) async {
     _onlineUsersSubscription?.cancel();
 
     _onlineUsersSubscription = _chatRepository
-        .getUserOnlineStatus(currentUserId)
-        .listen((status) {
-          final isOnline = status["isOnline"] as bool;
-          final lastSeen = status["lastSeen"] as Timestamp?;
-        }, onError: (error) {});
+        .getUserOnlineStatus(userId)
+        .listen(
+          (status) {
+            final isOnline = status["isOnline"] as bool;
+            final lastSeen = status["lastSeen"] as Timestamp?;
+
+            emit(
+              state.copyWith(
+                isRecieverOnline: isOnline,
+                recieverLastSeen: lastSeen,
+              ),
+            );
+          },
+          onError: (error) {
+            print("error getting online status!");
+          },
+        );
   }
 
   @override
