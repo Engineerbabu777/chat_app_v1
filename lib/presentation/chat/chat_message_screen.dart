@@ -145,7 +145,7 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
                 icon: Icon(Icons.more_vert),
                 onSelected: (value) async {
                   if (value == "Block") {
-                    final bool? confirm = await showDialog(
+                    await showDialog(
                       context: context,
                       builder: (context) => AlertDialog(
                         title: Text(
@@ -159,7 +159,10 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
                             child: Text("Cancel"),
                           ),
                           TextButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              await _chatCubit.blockUser(widget.receiverId);
+                              Navigator.pop(context, true);
+                            },
                             child: Text(
                               "Block",
                               style: TextStyle(color: Colors.red),
@@ -168,10 +171,6 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
                         ],
                       ),
                     );
-
-                    if (confirm == true) {
-                      await _chatCubit.blockUser(widget.receiverId);
-                    }
                   }
                 },
               );
@@ -207,54 +206,69 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
 
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    IconButton(
-                      onPressed: () {},
-                      icon: Icon(
-                        Icons.emoji_emotions_outlined,
-                        color: Theme.of(context).primaryColor,
-                      ),
-                    ),
+                child: Builder(
+                  builder: (context) {
+                    if (state.amIBlocked) {
+                      return const Text(
+                        "You are blocked by this user.",
+                        style: TextStyle(color: Colors.red),
+                      );
+                    }
 
-                    // TextField (CENTER)
-                    Expanded(
-                      child: TextField(
-                        controller: _sendMessageController,
-                        keyboardType: TextInputType.multiline,
-                        maxLines: null,
-                        textCapitalization: TextCapitalization.sentences,
-                        decoration: InputDecoration(
-                          hintText: "Type a message",
-                          filled: true,
-                          fillColor: Theme.of(context).cardColor,
-                          contentPadding: EdgeInsets.symmetric(
-                            horizontal: 12,
-                            vertical: 10,
+                    if (state.isUserBlocked) {
+                      return const Text(
+                        "You have blocked this user.",
+                        style: TextStyle(color: Colors.red),
+                      );
+                    }
+
+                    return Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.emoji_emotions_outlined,
+                            color: Theme.of(context).primaryColor,
                           ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(color: Colors.grey.shade300),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: Theme.of(context).primaryColor,
-                              width: 2,
+                        ),
+
+                        Expanded(
+                          child: TextField(
+                            controller: _sendMessageController,
+                            maxLines: null,
+                            decoration: InputDecoration(
+                              hintText: "Type a message",
+                              filled: true,
+                              fillColor: Theme.of(context).cardColor,
+                              contentPadding: const EdgeInsets.symmetric(
+                                horizontal: 12,
+                                vertical: 10,
+                              ),
+                              enabledBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(
+                                  color: Colors.grey.shade300,
+                                ),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(12),
+                                borderSide: BorderSide(
+                                  color: Theme.of(context).primaryColor,
+                                  width: 2,
+                                ),
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                    ),
 
-                    IconButton(
-                      onPressed: () {
-                        _handleSendMessage();
-                      },
-                      icon: Icon(Icons.send),
-                      color: Theme.of(context).primaryColor,
-                    ),
-                  ],
+                        IconButton(
+                          onPressed: _handleSendMessage,
+                          icon: const Icon(Icons.send),
+                          color: Theme.of(context).primaryColor,
+                        ),
+                      ],
+                    );
+                  },
                 ),
               ),
             ],

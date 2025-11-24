@@ -197,6 +197,8 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> blockUser(String userId) async {
     try {
       await _chatRepository.blockUser(currentUserId, userId);
+
+      emit(state.copyWith(isUserBlocked: true));
     } catch (e) {
       print(e.toString());
     }
@@ -205,6 +207,8 @@ class ChatCubit extends Cubit<ChatState> {
   Future<void> unBlockUser(String userId) async {
     try {
       await _chatRepository.unBlockUser(currentUserId, userId);
+
+      emit(state.copyWith(isUserBlocked: false));
     } catch (e) {
       print(e.toString());
     }
