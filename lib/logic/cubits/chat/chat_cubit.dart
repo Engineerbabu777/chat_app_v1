@@ -155,7 +155,7 @@ class ChatCubit extends Cubit<ChatState> {
         .listen(
           (status) {
             final isTyping = status["isTyping"] as bool;
-            final typingUserId = status["typingUserId"] as Timestamp?;
+            final typingUserId = status["typingUserId"] as String?;
 
             emit(
               state.copyWith(
