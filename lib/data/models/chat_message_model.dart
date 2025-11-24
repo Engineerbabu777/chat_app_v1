@@ -28,7 +28,31 @@ class ChatMessageModel {
   });
 
   factory ChatMessageModel.fromFirestore(DocumentSnapshot doc) {
-    final data = doc.data() as Map<String, dynamic>;
+    final data = doc.data() as Map<String, dynamic>? ?? {};
+
+    // Convert type string to enum
+    MessageType type;
+    final typeStr = data["type"] as String?;
+    if (typeStr != null) {
+      type = MessageType.values.firstWhere(
+        (e) => e.toString() == typeStr,
+        orElse: () => MessageType.text,
+      );
+    } else {
+      type = MessageType.text;
+    }
+
+    // Convert status string to enum
+    MessageStatus status;
+    final statusStr = data["status"] as String?;
+    if (statusStr != null) {
+      status = MessageStatus.values.firstWhere(
+        (e) => e.toString() == statusStr,
+        orElse: () => MessageStatus.sent,
+      );
+    } else {
+      status = MessageStatus.sent;
+    }
 
     return ChatMessageModel(
       id: doc.id,
@@ -36,8 +60,8 @@ class ChatMessageModel {
       senderId: data["senderId"] ?? "",
       receiverId: data["receiverId"] ?? "",
       content: data["content"] ?? "",
-      type: MessageType.values[data["type"] ?? 0],
-      status: MessageStatus.values[data["status"] ?? 0],
+      type: type,
+      status: status,
       timestamp: data["timestamp"] ?? Timestamp.now(),
       readBy: List<String>.from(data["readBy"] ?? []),
     );
@@ -49,8 +73,8 @@ class ChatMessageModel {
       "senderId": senderId,
       "receiverId": receiverId,
       "content": content,
-      "type": type.index, // store enum as int
-      "status": status.index, // store enum as int
+      "type": type.toString(), // store type as string
+      "status": status.toString(), // store status as string
       "timestamp": timestamp,
       "readBy": readBy,
     };

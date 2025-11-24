@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:chat_app/data/models/chat_message_model.dart';
 import 'package:chat_app/data/models/chat_room_model.dart';
 import 'package:chat_app/data/services/base_repository.dart';
@@ -137,4 +135,6 @@ class ChatRepository extends BaseRepository {
               .toList(),
         );
   }
+
+  // Stream<int> getUnreadCount(String chatRoomId, String )
 }
