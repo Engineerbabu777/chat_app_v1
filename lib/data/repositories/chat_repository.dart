@@ -237,4 +237,6 @@ class ChatRepository extends BaseRepository {
       "blockedUsers": FieldValue.arrayRemove([unblockUserId]),
     });
   }
+
+  Future<bool> amIBlockedFrom(String currentUser, String otherUserId){}
 }
