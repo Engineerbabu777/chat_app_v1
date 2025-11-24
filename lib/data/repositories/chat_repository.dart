@@ -199,7 +199,7 @@ class ChatRepository extends BaseRepository {
 
   Future<void> updateOnlineStatus(String userId, bool isOnline) async {
     await firestore.collection("users").doc(userId).update({
-      "isOnline": true,
+      "isOnline": isOnline,
       'lastSeen': Timestamp.now(),
     });
   }

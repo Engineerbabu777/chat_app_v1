@@ -71,18 +71,26 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
               children: [
                 Text(widget.receiverName),
                 BlocBuilder<ChatCubit, ChatState>(
-                  bloc: getIt<ChatCubit>(),
+                  bloc: _chatCubit,
                   builder: (context, state) {
-                    if (state.isRecieverOnline && state.isRecieverTyping) {
+                    print({"state": state.isRecieverOnline});
+                    if (state.isRecieverTyping) {
                       return Text(
                         "Typing...",
                         style: TextStyle(color: Colors.green, fontSize: 12),
                       );
                     }
 
-                    if (state.isRecieverOnline && !state.isRecieverTyping) {
+                    if (state.isRecieverOnline) {
                       return Text(
                         "Online",
+                        style: TextStyle(color: Colors.green, fontSize: 12),
+                      );
+                    }
+
+                    if (state.recieverLastSeen != null) {
+                      return Text(
+                        state.recieverLastSeen!.toDate().toString(),
                         style: TextStyle(color: Colors.green, fontSize: 12),
                       );
                     }

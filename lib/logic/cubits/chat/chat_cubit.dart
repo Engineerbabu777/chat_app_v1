@@ -50,6 +50,8 @@ class ChatCubit extends Cubit<ChatState> {
       _subscribeToMessages(chatRoom.id);
       _subscribeToOnlineUsers(receiverId);
       _subscribeToTypingStatus(chatRoom.id);
+
+      _chatRepository.updateOnlineStatus(currentUserId, true);
     } catch (e) {
       print(e.toString());
       emit(
@@ -142,11 +144,11 @@ class ChatCubit extends Cubit<ChatState> {
   }
 
   void _subscribeToTypingStatus(String chatRoomId) async {
-    _onlineUsersSubscription?.cancel();
+    _typingSubscription?.cancel();
 
     print("SUbscirbed to typings users!");
 
-    _onlineUsersSubscription = _chatRepository
+    _typingSubscription = _chatRepository
         .getTypingStatus(chatRoomId)
         .listen(
           (status) {
