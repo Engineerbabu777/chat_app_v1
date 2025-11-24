@@ -4,9 +4,9 @@ import 'package:chat_app/data/models/chat_message_model.dart';
 import 'package:chat_app/data/services/service_locator.dart';
 import 'package:chat_app/logic/cubits/chat/chat_cubit.dart';
 import 'package:chat_app/logic/cubits/chat/chat_state.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 
 class ChatMessageScreen extends StatefulWidget {
   final String receiverId;
@@ -206,16 +206,21 @@ class MessageBubble extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Text(
-                  "4:34 AM",
+                  DateFormat('h:mm a').format(message.timestamp.toDate()),
                   style: TextStyle(color: isMe ? Colors.white : Colors.black),
                 ),
                 if (isMe)
-                  Icon(
-                    Icons.done_all,
-                    size: 20,
-                    color: message.status == MessageStatus.read
-                        ? Colors.green
-                        : Colors.red,
+                  Row(
+                    children: [
+                      SizedBox(width: 10),
+                      Icon(
+                        Icons.done_all,
+                        size: 18,
+                        color: message.status == MessageStatus.read
+                            ? Colors.green
+                            : Colors.red,
+                      ),
+                    ],
                   ),
               ],
             ),
