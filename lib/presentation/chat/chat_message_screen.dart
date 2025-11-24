@@ -32,6 +32,13 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
     _chatCubit.enterChat(widget.receiverId);
   }
 
+  Future<void> _handleSendMessage()async{
+    final messageText = _sendMessageController.text.trim();
+
+    _sendMessageController.clear();
+    await _chatCubit.sendMessage(content: messageText, receiverId: widget.receiverId);
+  }
+
   @override
   void dispose() {
     _inputFocusNode.dispose();
