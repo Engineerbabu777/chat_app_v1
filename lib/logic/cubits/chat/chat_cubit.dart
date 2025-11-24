@@ -40,6 +40,7 @@ class ChatCubit extends Cubit<ChatState> {
 
       _subscribeToMessages(chatRoom.id);
       _subscribeToOnlineUsers(receiverId);
+      _subscribeToTypingStatus(chatRoom.id);
     } catch (e) {
       print(e.toString());
       emit(
