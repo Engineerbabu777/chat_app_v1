@@ -221,4 +221,15 @@ class ChatRepository extends BaseRepository {
       "typingUserId": userId,
     });
   }
+
+
+  Future<void> blockUser(String currentUserId, String blockedUserId) async{
+    final userRef = firestore.collection("users").doc(currentUserId);
+
+    await userRef.update({
+      "blockedUsers":FieldValue.arrayUnion([blockedUserId])
+    });
+
+
+  }
 }
