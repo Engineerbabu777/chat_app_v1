@@ -32,11 +32,14 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
     _chatCubit.enterChat(widget.receiverId);
   }
 
-  Future<void> _handleSendMessage()async{
+  Future<void> _handleSendMessage() async {
     final messageText = _sendMessageController.text.trim();
 
     _sendMessageController.clear();
-    await _chatCubit.sendMessage(content: messageText, receiverId: widget.receiverId);
+    await _chatCubit.sendMessage(
+      content: messageText,
+      receiverId: widget.receiverId,
+    );
   }
 
   @override
@@ -141,7 +144,9 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
                 ),
 
                 IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _handleSendMessage();
+                  },
                   icon: Icon(Icons.send),
                   color: _sendMessageController.text.trim().isNotEmpty
                       ? Theme.of(context).primaryColor
