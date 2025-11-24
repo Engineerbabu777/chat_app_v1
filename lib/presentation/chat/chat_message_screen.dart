@@ -126,9 +126,57 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
           ],
         ),
         actions: [
-          Padding(
-            padding: EdgeInsetsGeometry.only(right: 15.0),
-            child: Icon(Icons.more_vert),
+          BlocBuilder<ChatCubit, ChatState>(
+            builder: (context, state) {
+              if (state.isUserBlocked) {
+                return TextButton.icon(
+                  onPressed: () {
+                    _chatCubit.unBlockUser(widget.receiverId);
+                  },
+                  label: Text("Unblock"),
+                  icon: Icon(Icons.block),
+                );
+              }
+
+              return PopupMenuButton<String>(
+                itemBuilder: (context) => <PopupMenuEntry<String>>[
+                  const PopupMenuItem(value: "Block", child: Text("Block")),
+                ],
+                icon: Icon(Icons.more_vert),
+                onSelected: (value) async {
+                  if (value == "Block") {
+                    final bool? confirm = await showDialog(
+                      context: context,
+                      builder: (context) => AlertDialog(
+                        title: Text(
+                          "Are you sure you want to block this user ${widget.receiverName}",
+                        ),
+                        actions: [
+                          TextButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                            },
+                            child: Text("Cancel"),
+                          ),
+                          TextButton(
+                            onPressed: () {},
+                            child: Text(
+                              "Block",
+                              style: TextStyle(color: Colors.red),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+
+                    if (confirm == true) {
+                      await _chatCubit.blockUser(widget.receiverId);
+                    }
+                  }
+                },
+              );
+            },
+            bloc: _chatCubit,
           ),
         ],
       ),
