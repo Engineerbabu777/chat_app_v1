@@ -181,4 +181,19 @@ class ChatRepository extends BaseRepository {
       };
     });
   }
+
+  Stream<Map<String, dynamic>> getTypingStatus(String chatRoomId) {
+    return _chatRooms.doc(chatRoomId).snapshots().map((snapshot) {
+      if (!snapshot.exists) {
+        return {'isTyping': false, 'isTypingUserId': null};
+      }
+
+      final data = snapshot.data() as Map<String, dynamic>;
+
+      return {
+        'isTyping': data['isTyping'] ?? false,
+        'typingUserId': data['typingUserId'],
+      };
+    });
+  }
 }
