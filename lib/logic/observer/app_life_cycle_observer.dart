@@ -6,4 +6,23 @@ class AppLifeCycleObserver extends WidgetsBindingObserver {
   final ChatRepository chatRepository;
 
   AppLifeCycleObserver({required this.userId, required this.chatRepository});
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    super.didChangeAppLifecycleState(state);
+
+    switch (state) {
+      case AppLifecycleState.paused:
+      case AppLifecycleState.inactive:
+      case AppLifecycleState.detached:
+        chatRepository.updateOnlineStatus(userId, false);
+        break;
+      case AppLifecycleState.resumed:
+        chatRepository.updateOnlineStatus(userId, true);
+        break;
+
+      default:
+        break;
+    }
+  }
 }
