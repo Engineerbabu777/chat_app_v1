@@ -31,7 +31,14 @@ class ChatListTile extends StatelessWidget {
         _getOtherUsername(),
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
-      subtitle: Expanded(child: Text(chat.lastMessage ?? "")),
+      subtitle: Expanded(
+        child: Text(
+          chat.lastMessage ?? "",
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(color: Colors.grey),
+        ),
+      ),
       trailing: Container(
         decoration: BoxDecoration(
           color: Theme.of(context).primaryColor,
