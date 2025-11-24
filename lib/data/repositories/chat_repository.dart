@@ -203,4 +203,22 @@ class ChatRepository extends BaseRepository {
       'lastSeen': Timestamp.now(),
     });
   }
+
+  Future<void> updateTypingStatus(
+    String chatRoomId,
+    String userId,
+    bool isTyping,
+  ) async {
+    final chatRoom = await _chatRooms.doc(chatRoomId).get();
+
+    if (!chatRoom.exists) {
+      print("Unable to find the chat room with this is;");
+      return;
+    }
+
+    await _chatRooms.doc(chatRoomId).update({
+      "isTyping": isTyping,
+      "typingUserId": userId,
+    });
+  }
 }
