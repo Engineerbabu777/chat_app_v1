@@ -13,8 +13,32 @@ class ChatListTile extends StatelessWidget {
     required this.onTap,
   });
 
+  String _getOtherUsername() {
+    final otherUserId = chat.participants.firstWhere(
+      (id) => id != currentUserId,
+    );
+    return chat.participantsName[otherUserId] ?? "Unknown";
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return ListTile(
+      leading: CircleAvatar(
+        backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
+        child: Text(_getOtherUsername()[0].toUpperCase()),
+      ),
+      title: Text(
+        _getOtherUsername(),
+        style: TextStyle(fontWeight: FontWeight.bold),
+      ),
+      subtitle: Expanded(child: Text(chat.lastMessage ?? "")),
+      trailing: Container(
+        decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          shape: BoxShape.circle,
+        ),
+        child: Text("1", style: TextStyle(color: Colors.white)),
+      ),
+    );
   }
 }
