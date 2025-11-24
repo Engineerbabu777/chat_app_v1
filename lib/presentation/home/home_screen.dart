@@ -5,6 +5,7 @@ import 'package:chat_app/data/repositories/contact_repository.dart';
 import 'package:chat_app/data/services/service_locator.dart';
 import 'package:chat_app/logic/cubits/auth/auth_cubit.dart';
 import 'package:chat_app/presentation/chat/chat_message_screen.dart';
+import 'package:chat_app/presentation/screens/auth/login_screen.dart';
 import 'package:chat_app/presentation/widgets/chat_list_tile.dart';
 import 'package:chat_app/router/app_router.dart';
 import 'package:flutter/material.dart';
@@ -99,6 +100,7 @@ class _HomeScreenState extends State<HomeScreen> {
           InkWell(
             onTap: () {
               getIt<AuthCubit>().signOut();
+              getIt<AppRouter>().pushAndRemoveUntil(LoginScreen());
             },
             child: Icon(Icons.logout),
           ),
