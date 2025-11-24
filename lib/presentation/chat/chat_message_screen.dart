@@ -46,6 +46,15 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
 
 void _onScroll(){
 
+if(_scrollController.position.pixels>=_scrollController.position.maxScrollExtent-200){
+  _chatCubit.loadMoreMessages();
+}
+}
+
+void _scrollToBottom(){
+  if(_scrollController.hasClients){
+    _scrollController.animateTo(0, duration: Duration(seconds: 300), curve: Curves.easeOut);
+  }
 }
 
   Future<void> _handleSendMessage() async {
