@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'dart:io';
 
 import 'package:chat_app/data/models/chat_message_model.dart';
 import 'package:chat_app/data/services/service_locator.dart';
@@ -7,6 +8,7 @@ import 'package:chat_app/logic/cubits/chat/chat_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
+import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 
 class ChatMessageScreen extends StatefulWidget {
   final String receiverId;
@@ -27,6 +29,8 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
   late final ChatCubit _chatCubit;
   final _scrollController = ScrollController();
   List<ChatMessageModel> _previousMessages = [];
+
+  bool _isEmojiOpen = false;
 
   bool _isComposing = false;
 
@@ -258,7 +262,14 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
                     return Row(
                       children: [
                         IconButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            setState(() {
+                              _isEmojiOpen = !_isEmojiOpen;
+                              if (_isEmojiOpen) {
+                                FocusScope.of(context).unfocus();
+                              }
+                            });
+                          },
                           icon: Icon(
                             Icons.emoji_emotions_outlined,
                             color: Theme.of(context).primaryColor,
@@ -267,6 +278,11 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
 
                         Expanded(
                           child: TextField(
+                            onTap: () {
+                              if (_isEmojiOpen) {
+                                _isEmojiOpen = !_isEmojiOpen;
+                              }
+                            },
                             controller: _sendMessageController,
                             maxLines: null,
                             decoration: InputDecoration(
@@ -301,6 +317,66 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
                               ? Theme.of(context).primaryColor
                               : Colors.grey,
                         ),
+
+                        if (_isEmojiOpen)
+                          SizedBox(
+                            height: 250,
+                            child: EmojiPicker(
+                              textEditingController: _sendMessageController,
+                              onEmojiSelected: (category, emoji) {
+                                _sendMessageController
+                                  ..text += emoji.emoji
+                                  ..selection = TextSelection.fromPosition(
+                                    TextPosition(
+                                      offset:
+                                          _sendMessageController.text.length,
+                                    ),
+                                  );
+                                setState(() {
+                                  _isComposing =
+                                      _sendMessageController.text.isNotEmpty;
+                                });
+                              },
+                              config: Config(
+                                height: 250,
+                                emojiViewConfig: EmojiViewConfig(
+                                  columns: 7,
+                                  emojiSizeMax:
+                                      32.0 * (Platform.isIOS ? 1.30 : 1.0),
+                                  verticalSpacing: 0,
+                                  horizontalSpacing: 0,
+                                  gridPadding: EdgeInsets.zero,
+                                  backgroundColor: Theme.of(
+                                    context,
+                                  ).scaffoldBackgroundColor,
+                                  loadingIndicator: const SizedBox.shrink(),
+                                ),
+                                categoryViewConfig: const CategoryViewConfig(
+                                  initCategory: Category.RECENT,
+                                ),
+                                bottomActionBarConfig: BottomActionBarConfig(
+                                  enabled: true,
+                                  backgroundColor: Theme.of(
+                                    context,
+                                  ).scaffoldBackgroundColor,
+                                  buttonColor: Theme.of(context).primaryColor,
+                                ),
+                                skinToneConfig: const SkinToneConfig(
+                                  enabled: true,
+                                  dialogBackgroundColor: Colors.white,
+                                  indicatorColor: Colors.grey,
+                                ),
+                                searchViewConfig: SearchViewConfig(
+                                  backgroundColor: Theme.of(
+                                    context,
+                                  ).scaffoldBackgroundColor,
+                                  buttonIconColor: Theme.of(
+                                    context,
+                                  ).primaryColor,
+                                ),
+                              ),
+                            ),
+                          ),
                       ],
                     );
                   },
