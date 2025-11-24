@@ -223,7 +223,7 @@ class ChatCubit extends Cubit<ChatState> {
     print("SUbscirbed to block users!");
 
     _onlineUsersSubscription = _chatRepository
-        .amIBlocked(currentUserId, userId)
+        .isUserBlocked(currentUserId, userId)
         .listen(
           (isBlocked) {
             emit(state.copyWith(isUserBlocked: isBlocked));
