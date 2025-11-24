@@ -5,6 +5,7 @@ import 'package:chat_app/data/repositories/contact_repository.dart';
 import 'package:chat_app/data/services/service_locator.dart';
 import 'package:chat_app/logic/cubits/auth/auth_cubit.dart';
 import 'package:chat_app/presentation/chat/chat_message_screen.dart';
+import 'package:chat_app/presentation/widgets/chat_list_tile.dart';
 import 'package:chat_app/router/app_router.dart';
 import 'package:flutter/material.dart';
 
@@ -107,8 +108,32 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       body: StreamBuilder(
         stream: _chatRepository.getChatRooms(_currentUserId),
-        builder: (context){
-          return 
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            print(snapshot.error);
+            return Center(child: Text(snapshot.error.toString()));
+          }
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+
+          final chats = snapshot.data!;
+
+          if (chats.isEmpty) {
+            return Center(child: Text("No recent chats."));
+          }
+
+          return ListView.builder(
+            itemBuilder: (context, index) {
+              final chat = chats[index];
+              return ChatListTile(
+                chat: chat,
+                currentUserId: _currentUserId,
+                onTap: () {},
+              );
+            },
+            itemCount: chats.length,
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -121,5 +146,3 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
-
-

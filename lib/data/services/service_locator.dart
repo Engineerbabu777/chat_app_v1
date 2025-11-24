@@ -23,6 +23,8 @@ Future<void> setupServiceLocator() async {
 
   getIt.registerLazySingleton(() => AuthRepository());
 
+  getIt.registerLazySingleton(() => ChatRepository());
+
   getIt.registerLazySingleton(() => ContactRepository());
 
   getIt.registerLazySingleton<FirebaseFirestore>(
