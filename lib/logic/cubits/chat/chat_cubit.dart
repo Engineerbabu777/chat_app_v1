@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chat_app/data/repositories/chat_repository.dart';
 import 'package:chat_app/logic/cubits/chat/chat_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -42,6 +44,8 @@ class ChatCubit extends Cubit<ChatState> {
     required String content,
     required String receiverId,
   }) async {
+    print(state.chatRoomId!);
+
     if (state.chatRoomId == null) return;
 
     try {
@@ -52,6 +56,8 @@ class ChatCubit extends Cubit<ChatState> {
         content,
       );
     } catch (e) {
+      print(e.toString());
+
       emit(state.copyWith(error: "Failed to send message $e"));
     }
   }

@@ -72,10 +72,11 @@ class ChatRepository extends BaseRepository {
       content: content,
       timestamp: Timestamp.now(),
       readBy: [senderId],
+      type: type,
     );
 
     // message to sub collection!
-    batch.set(messageDoc, message);
+    batch.set(messageDoc, message.toMap());
 
     // update chat room!
     batch.update(_chatRooms.doc(chatRoomId), {

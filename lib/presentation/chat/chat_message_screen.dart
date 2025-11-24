@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:chat_app/data/models/chat_message_model.dart';
 import 'package:chat_app/data/services/service_locator.dart';
 import 'package:chat_app/logic/cubits/chat/chat_cubit.dart';
@@ -35,11 +37,12 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
   Future<void> _handleSendMessage() async {
     final messageText = _sendMessageController.text.trim();
 
-    _sendMessageController.clear();
+    log("Hello");
     await _chatCubit.sendMessage(
       content: messageText,
       receiverId: widget.receiverId,
     );
+    _sendMessageController.clear();
   }
 
   @override
@@ -148,9 +151,7 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
                     _handleSendMessage();
                   },
                   icon: Icon(Icons.send),
-                  color: _sendMessageController.text.trim().isNotEmpty
-                      ? Theme.of(context).primaryColor
-                      : Colors.grey,
+                  color: Theme.of(context).primaryColor,
                 ),
               ],
             ),
