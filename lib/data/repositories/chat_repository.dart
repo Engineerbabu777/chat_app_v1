@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:chat_app/data/models/chat_message_model.dart';
 import 'package:chat_app/data/models/chat_room_model.dart';
+import 'package:chat_app/data/models/user_model.dart';
 import 'package:chat_app/data/services/base_repository.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
@@ -238,5 +239,13 @@ class ChatRepository extends BaseRepository {
     });
   }
 
-  Future<bool> amIBlockedFrom(String currentUser, String otherUserId){}
+  Stream<bool> isUserBlocked(String currentUserId, String otherUserId) {
+    return firestore.collection("users").doc(currentUserId).snapshots().map((
+      doc,
+    ) {
+      final userData = UserModel.fromFirestore(doc);
+
+      return userData.blockedUsers.contains(otherUserId);
+    });
+  }
 }
