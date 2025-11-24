@@ -7,6 +7,8 @@ class ChatCubit extends Cubit<ChatState> {
   final ChatRepository _chatRepository;
   final String currentUserId;
 
+  bool _isInChat = false;
+
   StreamSubscription? _messagesSubscription;
 
   ChatCubit({
@@ -17,6 +19,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   void enterChat(String receiverId) async {
     emit(state.copyWith(status: ChatStatus.loading));
+    _isInChat = true;
 
     try {
       final chatRoom = await _chatRepository.getOrCreateChatRoom(
@@ -70,6 +73,9 @@ class ChatCubit extends Cubit<ChatState> {
         .getMessages(chatRoomId)
         .listen(
           (messages) {
+            if (_isInChat) {
+              _markMessagesAsRead(chatRoomId);
+            }
             emit(state.copyWith(messages: messages ?? [], error: null));
           },
           onError: (error) {
@@ -90,6 +96,10 @@ class ChatCubit extends Cubit<ChatState> {
     } catch (e) {
       print(e.toString());
     }
+  }
+
+  Future<void> leaveChat() async {
+    _isInChat = false;
   }
 
   @override
