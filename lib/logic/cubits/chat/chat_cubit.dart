@@ -169,6 +169,12 @@ class ChatCubit extends Cubit<ChatState> {
         );
   }
 
+  void startTyping() {
+    if (state.chatRoomId == null) return;
+
+    typingTimer?.cancel();
+  }
+
   @override
   Future<void> close() {
     _messagesSubscription?.cancel();
