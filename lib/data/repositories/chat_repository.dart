@@ -138,7 +138,7 @@ class ChatRepository extends BaseRepository {
 
   Stream<int> getUnreadCount(String chatRoomId, String userId) {
     return getChatRoomMessagesCollection(chatRoomId)
-        .where("revieverId", isEqualTo: userId)
+        .where("receiverId", isEqualTo: userId)
         .where("status", isEqualTo: MessageStatus.sent.toString())
         .snapshots()
         .map((snapshot) => snapshot.docs.length);

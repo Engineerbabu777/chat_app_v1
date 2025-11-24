@@ -1,4 +1,6 @@
 import 'package:chat_app/data/models/chat_room_model.dart';
+import 'package:chat_app/data/repositories/chat_repository.dart';
+import 'package:chat_app/data/services/service_locator.dart';
 import 'package:flutter/material.dart';
 
 class ChatListTile extends StatelessWidget {
@@ -44,13 +46,25 @@ class ChatListTile extends StatelessWidget {
           ),
         ],
       ),
-      trailing: Container(
-        decoration: BoxDecoration(
-          color: Theme.of(context).primaryColor,
-          shape: BoxShape.circle,
-        ),
-        padding: const EdgeInsets.all(8),
-        child: Text("1", style: TextStyle(color: Colors.white)),
+      trailing: StreamBuilder<int>(
+        stream: getIt<ChatRepository>().getUnreadCount(chat.id, currentUserId),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData || snapshot.data == 0) {
+            return const SizedBox();
+          }
+
+          return Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).primaryColor,
+              shape: BoxShape.circle,
+            ),
+            padding: const EdgeInsets.all(8),
+            child: Text(
+              snapshot.data.toString(),
+              style: TextStyle(color: Colors.white),
+            ),
+          );
+        },
       ),
     );
   }
