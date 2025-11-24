@@ -207,7 +207,10 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
           ),
         ],
       ),
-      body: BlocBuilder<ChatCubit, ChatState>(
+      body: BlocConsumer<ChatCubit, ChatState>(
+        listener: (context, state) {
+          _hasNewMessages(state.messages);
+        },
         bloc: _chatCubit,
         builder: (context, state) {
           if (state.status == ChatStatus.loading) {
@@ -217,8 +220,6 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
           if (state.status == ChatStatus.error) {
             return Center(child: Text(state.error ?? "Something went wrong!"));
           }
-
-          _hasNewMessages(state.messages); // 👈 CALL IT HERE
 
           return Column(
             children: [

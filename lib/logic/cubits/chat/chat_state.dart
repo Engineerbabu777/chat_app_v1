@@ -31,7 +31,7 @@ class ChatState extends Equatable {
     this.chatRoomId,
     this.isRecieverOnline = false,
     this.isRecieverTyping = false,
-    this.hasMoreMessages = false,
+    this.hasMoreMessages = true,
     this.isLoadingMore = false,
   });
 
