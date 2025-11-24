@@ -175,6 +175,16 @@ class ChatCubit extends Cubit<ChatState> {
     typingTimer?.cancel();
   }
 
+  Future<void> _updateTypingStatus(bool isTyping){
+    if(state.chatRoomId == null) return;
+
+    try {
+      
+    } catch (e) {
+      
+    }
+  }
+
   @override
   Future<void> close() {
     _messagesSubscription?.cancel();
