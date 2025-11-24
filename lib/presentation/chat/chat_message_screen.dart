@@ -89,8 +89,9 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
                     }
 
                     if (state.recieverLastSeen != null) {
+                      final lastSeen = state.recieverLastSeen!.toDate();
                       return Text(
-                        state.recieverLastSeen!.toDate().toString(),
+                        "last seen at ${DateFormat("h:mm:a").format(lastSeen)}",
                         style: TextStyle(color: Colors.green, fontSize: 12),
                       );
                     }
