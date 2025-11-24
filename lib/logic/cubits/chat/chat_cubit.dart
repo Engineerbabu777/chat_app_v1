@@ -14,7 +14,7 @@ class ChatCubit extends Cubit<ChatState> {
     required ChatRepository chatRepository,
     required this.currentUserId,
   }) : _chatRepository = chatRepository,
-       super(const ChatState());
+       super(const ChatState([]));
 
   void enterChat(String receiverId) async {
     emit(state.copyWith(status: ChatStatus.loading));
@@ -32,6 +32,8 @@ class ChatCubit extends Cubit<ChatState> {
           chatRoomId: chatRoom.id,
         ),
       );
+
+      _subscribeToMessages(chatRoom.id);
     } catch (e) {
       emit(
         state.copyWith(
