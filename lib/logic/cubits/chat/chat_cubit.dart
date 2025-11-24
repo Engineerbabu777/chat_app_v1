@@ -54,6 +54,7 @@ class ChatCubit extends Cubit<ChatState> {
       _subscribeToMessages(chatRoom.id);
       _subscribeToOnlineUsers(receiverId);
       _subscribeToTypingStatus(chatRoom.id);
+      _subscribeToUserBlockStatus(receiverId);
 
       _chatRepository.updateOnlineStatus(currentUserId, true);
     } catch (e) {
@@ -237,7 +238,7 @@ class ChatCubit extends Cubit<ChatState> {
         .amIBlocked(currentUserId, userId)
         .listen(
           (isBlocked) {
-            emit(state.copyWith(isUserBlocked: isBlocked));
+            emit(state.copyWith(amIBlocked: isBlocked));
           },
           onError: (error) {
             print("error getting blocked status my!");
