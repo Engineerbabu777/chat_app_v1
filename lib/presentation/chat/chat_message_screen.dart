@@ -34,6 +34,9 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
     _inputFocusNode.addListener(() {
       setState(() {}); // rebuild when focus changes
     });
+    _sendMessageController.addListener(() {
+      _onTextChanged();
+    });
     _chatCubit = getIt<ChatCubit>();
     _chatCubit.enterChat(widget.receiverId);
   }
@@ -58,7 +61,9 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
       });
     }
 
-    if (isComposing) {}
+    if (isComposing) {
+      _chatCubit.startTyping();
+    }
   }
 
   @override
