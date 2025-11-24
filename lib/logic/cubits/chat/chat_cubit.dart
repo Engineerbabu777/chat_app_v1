@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:chat_app/data/repositories/chat_repository.dart';
 import 'package:chat_app/logic/cubits/chat/chat_state.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatCubit extends Cubit<ChatState> {
@@ -10,6 +11,8 @@ class ChatCubit extends Cubit<ChatState> {
   bool _isInChat = false;
 
   StreamSubscription? _messagesSubscription;
+  StreamSubscription? _onlineUsersSubscription;
+  StreamSubscription? _typingSubscription;
 
   ChatCubit({
     required ChatRepository chatRepository,
@@ -100,6 +103,17 @@ class ChatCubit extends Cubit<ChatState> {
 
   Future<void> leaveChat() async {
     _isInChat = false;
+  }
+
+  void _subscribeToOnlineUsers() async {
+    _onlineUsersSubscription?.cancel();
+
+    _onlineUsersSubscription = _chatRepository
+        .getUserOnlineStatus(currentUserId)
+        .listen((status) {
+          final isOnline = status["isOnline"] as bool;
+          final lastSeen = status["lastSeen"] as Timestamp?;
+        }, onError: (error) {});
   }
 
   @override
