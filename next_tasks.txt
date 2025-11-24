@@ -1,0 +1,9 @@
+arranges messages by dates likes whatsapp;
+
+deleted messages;
+ - delete for me;
+ - delete for everyone;
+
+edited messages;
+
+Clear Chat by user;
