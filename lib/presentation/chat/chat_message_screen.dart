@@ -25,6 +25,8 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
   final TextEditingController _sendMessageController = TextEditingController();
   final FocusNode _inputFocusNode = FocusNode();
   late final ChatCubit _chatCubit;
+   _scrollController = ScrollController();
+  List<ChatMessageModel> _previousMessages = [];
 
   bool _isComposing = false;
 
@@ -37,9 +39,14 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
     _sendMessageController.addListener(() {
       _onTextChanged();
     });
+    _scrollController.addListener()
     _chatCubit = getIt<ChatCubit>();
     _chatCubit.enterChat(widget.receiverId);
   }
+
+void _onScroll(){
+
+}
 
   Future<void> _handleSendMessage() async {
     final messageText = _sendMessageController.text.trim();
