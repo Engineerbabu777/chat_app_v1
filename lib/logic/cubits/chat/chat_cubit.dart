@@ -173,6 +173,11 @@ class ChatCubit extends Cubit<ChatState> {
     if (state.chatRoomId == null) return;
 
     typingTimer?.cancel();
+
+    _updateTypingStatus(true);
+    typingTimer = Timer(Duration(seconds: 3), () {
+      _updateTypingStatus(false);
+    });
   }
 
   Future<void> _updateTypingStatus(bool isTyping) async {
