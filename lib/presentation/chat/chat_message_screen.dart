@@ -26,6 +26,8 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
   final FocusNode _inputFocusNode = FocusNode();
   late final ChatCubit _chatCubit;
 
+  bool _isComposing = false;
+
   @override
   void initState() {
     super.initState();
@@ -45,6 +47,18 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
       receiverId: widget.receiverId,
     );
     _sendMessageController.clear();
+  }
+
+  void _onTextChanged() {
+    final isComposing = _sendMessageController.text.isNotEmpty;
+
+    if (isComposing != _isComposing) {
+      setState(() {
+        _isComposing = isComposing;
+      });
+    }
+
+    if (isComposing) {}
   }
 
   @override
