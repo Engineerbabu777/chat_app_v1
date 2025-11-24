@@ -25,7 +25,7 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
   final TextEditingController _sendMessageController = TextEditingController();
   final FocusNode _inputFocusNode = FocusNode();
   late final ChatCubit _chatCubit;
-   _scrollController = ScrollController();
+   final _scrollController = ScrollController();
   List<ChatMessageModel> _previousMessages = [];
 
   bool _isComposing = false;
@@ -54,6 +54,13 @@ if(_scrollController.position.pixels>=_scrollController.position.maxScrollExtent
 void _scrollToBottom(){
   if(_scrollController.hasClients){
     _scrollController.animateTo(0, duration: Duration(seconds: 300), curve: Curves.easeOut);
+  }
+}
+
+void _hasNewMessages(List<ChatMessageModel> messages){
+  if(messages.length != _previousMessages.length){
+    _scrollToBottom();
+    _previousMessages = messages;
   }
 }
 
