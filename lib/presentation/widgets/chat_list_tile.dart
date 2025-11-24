@@ -23,6 +23,7 @@ class ChatListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
+      onTap: onTap,
       leading: CircleAvatar(
         backgroundColor: Theme.of(context).primaryColor.withOpacity(0.1),
         child: Text(_getOtherUsername()[0].toUpperCase()),
@@ -31,13 +32,17 @@ class ChatListTile extends StatelessWidget {
         _getOtherUsername(),
         style: TextStyle(fontWeight: FontWeight.bold),
       ),
-      subtitle: Expanded(
-        child: Text(
-          chat.lastMessage ?? "",
-          maxLines: 1,
-          overflow: TextOverflow.ellipsis,
-          style: TextStyle(color: Colors.grey),
-        ),
+      subtitle: Row(
+        children: [
+          Expanded(
+            child: Text(
+              chat.lastMessage ?? "",
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(color: Colors.grey),
+            ),
+          ),
+        ],
       ),
       trailing: Container(
         decoration: BoxDecoration(
