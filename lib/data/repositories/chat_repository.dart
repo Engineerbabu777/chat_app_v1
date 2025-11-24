@@ -110,20 +110,19 @@ class ChatRepository extends BaseRepository {
     );
   }
 
-  Stream<List<ChatMessageModel>> getMoreMessages(
+  Future<List<ChatMessageModel>> getMoreMessages(
     String roomId, {
     required DocumentSnapshot lastDocument,
-  }) {
-    var query = getChatRoomMessagesCollection(
-      roomId,
-    ).orderBy('timestamp', descending: true).limit(20);
+  }) async {
+    final query = getChatRoomMessagesCollection(roomId)
+        .orderBy('timestamp', descending: true)
+        .startAfterDocument(lastDocument)
+        .limit(20);
 
-    query = query.startAfterDocument(lastDocument);
+    final snapshot = await query.get();
 
-    return query.snapshots().map(
-      (snapshot) => snapshot.docs
-          .map((doc) => ChatMessageModel.fromFirestore(doc))
-          .toList(),
-    );
+    return snapshot.docs
+        .map((doc) => ChatMessageModel.fromFirestore(doc))
+        .toList();
   }
 }
