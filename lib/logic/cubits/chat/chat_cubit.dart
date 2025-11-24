@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:chat_app/data/repositories/chat_repository.dart';
 import 'package:chat_app/logic/cubits/chat/chat_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -5,6 +7,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class ChatCubit extends Cubit<ChatState> {
   final ChatRepository _chatRepository;
   final String currentUserId;
+
+  StreamSubscription? _messagesSubscription;
 
   ChatCubit({
     required ChatRepository chatRepository,
@@ -58,5 +62,26 @@ class ChatCubit extends Cubit<ChatState> {
 
       emit(state.copyWith(error: "Failed to send message $e"));
     }
+  }
+
+  void _subscribeToMessages(String chatRoomId) {
+    _messagesSubscription?.cancel();
+
+    _messagesSubscription = _chatRepository
+        .getMessages(chatRoomId)
+        .listen(
+          (messages) {
+            emit(state.copyWith(messages: messages, error: null));
+          },
+          onError: (error) {
+            emit(
+              state.copyWith(
+                messages: [],
+                error: "Failed to load messages $error",
+                status: ChatStatus.error,
+              ),
+            );
+          },
+        );
   }
 }
