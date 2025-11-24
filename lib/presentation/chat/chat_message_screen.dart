@@ -3,8 +3,10 @@ import 'dart:developer';
 import 'package:chat_app/data/models/chat_message_model.dart';
 import 'package:chat_app/data/services/service_locator.dart';
 import 'package:chat_app/logic/cubits/chat/chat_cubit.dart';
+import 'package:chat_app/logic/cubits/chat/chat_state.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatMessageScreen extends StatefulWidget {
   final String receiverId;
@@ -82,81 +84,93 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: 4,
-              itemBuilder: (BuildContext context, int index) {
-                return MessageBubble(
-                  message: ChatMessageModel(
-                    id: "8888",
-                    chatRoomId: "XXXX",
-                    senderId: "VVXVXVVX",
-                    receiverId: "XJHGXJHG",
-                    content: "Hello this is my first message",
-                    timestamp: Timestamp.now(),
-                    readBy: [],
-                  ),
-                  isMe: false,
-                );
-              },
-            ),
-          ),
+      body: BlocBuilder<ChatCubit, ChatState>(
+        bloc: _chatCubit,
+        builder: (context, state) {
+          if (state.status == ChatStatus.loading) {
+            return Center(child: CircularProgressIndicator());
+          }
 
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.emoji_emotions_outlined,
-                    color: Theme.of(context).primaryColor,
-                  ),
+          if (state.status == ChatStatus.error) {
+            return Center(child: Text(state.error ?? "Something went wrong!"));
+          }
+          return Column(
+            children: [
+              Expanded(
+                child: ListView.builder(
+                  itemCount: state.messages.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return MessageBubble(
+                      message: ChatMessageModel(
+                        id: "8888",
+                        chatRoomId: "XXXX",
+                        senderId: "VVXVXVVX",
+                        receiverId: "XJHGXJHG",
+                        content: "Hello this is my first message",
+                        timestamp: Timestamp.now(),
+                        readBy: [],
+                      ),
+                      isMe: false,
+                    );
+                  },
                 ),
+              ),
 
-                // TextField (CENTER)
-                Expanded(
-                  child: TextField(
-                    controller: _sendMessageController,
-                    keyboardType: TextInputType.multiline,
-                    maxLines: null,
-                    textCapitalization: TextCapitalization.sentences,
-                    decoration: InputDecoration(
-                      hintText: "Type a message",
-                      filled: true,
-                      fillColor: Theme.of(context).cardColor,
-                      contentPadding: EdgeInsets.symmetric(
-                        horizontal: 12,
-                        vertical: 10,
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    IconButton(
+                      onPressed: () {},
+                      icon: Icon(
+                        Icons.emoji_emotions_outlined,
+                        color: Theme.of(context).primaryColor,
                       ),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Colors.grey.shade300),
-                      ),
-                      focusedBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: Theme.of(context).primaryColor,
-                          width: 2,
+                    ),
+
+                    // TextField (CENTER)
+                    Expanded(
+                      child: TextField(
+                        controller: _sendMessageController,
+                        keyboardType: TextInputType.multiline,
+                        maxLines: null,
+                        textCapitalization: TextCapitalization.sentences,
+                        decoration: InputDecoration(
+                          hintText: "Type a message",
+                          filled: true,
+                          fillColor: Theme.of(context).cardColor,
+                          contentPadding: EdgeInsets.symmetric(
+                            horizontal: 12,
+                            vertical: 10,
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.grey.shade300),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(
+                              color: Theme.of(context).primaryColor,
+                              width: 2,
+                            ),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ),
 
-                IconButton(
-                  onPressed: () {
-                    _handleSendMessage();
-                  },
-                  icon: Icon(Icons.send),
-                  color: Theme.of(context).primaryColor,
+                    IconButton(
+                      onPressed: () {
+                        _handleSendMessage();
+                      },
+                      icon: Icon(Icons.send),
+                      color: Theme.of(context).primaryColor,
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-        ],
+              ),
+            ],
+          );
+        },
       ),
     );
   }

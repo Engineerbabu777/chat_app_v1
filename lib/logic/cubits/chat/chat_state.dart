@@ -10,8 +10,8 @@ class ChatState extends Equatable {
   final String? chatRoomId;
   final List<ChatMessageModel> messages;
 
-  const ChatState(
-    this.messages, {
+  const ChatState({
+    this.messages = const [], // ✅ default empty list
     this.status = ChatStatus.initial,
     this.error,
     this.receiverId,
@@ -26,7 +26,7 @@ class ChatState extends Equatable {
     List<ChatMessageModel>? messages,
   }) {
     return ChatState(
-      messages ?? this.messages,
+      messages: messages ?? this.messages, // ✅ never null
       status: status ?? this.status,
       error: error ?? this.error,
       receiverId: receiverId ?? this.receiverId,
