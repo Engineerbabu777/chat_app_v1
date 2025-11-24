@@ -16,6 +16,7 @@ class ChatCubit extends Cubit<ChatState> {
   StreamSubscription? _onlineUsersSubscription;
   StreamSubscription? _typingSubscription;
   StreamSubscription? _blockSubscription;
+  StreamSubscription? _amIBlockSubscription;
 
   Timer? typingTimer;
 
@@ -217,17 +218,29 @@ class ChatCubit extends Cubit<ChatState> {
 
   void _subscribeToUserBlockStatus(String userId) async {
     _blockSubscription?.cancel();
+    _amIBlockSubscription?.cancel();
 
     print("SUbscirbed to block users!");
 
     _onlineUsersSubscription = _chatRepository
-        .isUserBlocked(currentUserId, userId)
+        .amIBlocked(currentUserId, userId)
         .listen(
           (isBlocked) {
             emit(state.copyWith(isUserBlocked: isBlocked));
           },
           onError: (error) {
-            print("error getting online status!");
+            print("error getting blocked status!");
+          },
+        );
+
+    _amIBlockSubscription = _chatRepository
+        .amIBlocked(currentUserId, userId)
+        .listen(
+          (isBlocked) {
+            emit(state.copyWith(isUserBlocked: isBlocked));
+          },
+          onError: (error) {
+            print("error getting blocked status my!");
           },
         );
   }
