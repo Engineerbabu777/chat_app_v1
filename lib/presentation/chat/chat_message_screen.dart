@@ -70,9 +70,28 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(widget.receiverName),
-                Text(
-                  "Online",
-                  style: TextStyle(color: Colors.green, fontSize: 12),
+                BlocBuilder<ChatCubit, ChatState>(
+                  bloc: getIt<ChatCubit>(),
+                  builder: (context, state) {
+                    if (state.isRecieverOnline && state.isRecieverTyping) {
+                      return Text(
+                        "Typing...",
+                        style: TextStyle(color: Colors.green, fontSize: 12),
+                      );
+                    }
+
+                    if (state.isRecieverOnline && !state.isRecieverTyping) {
+                      return Text(
+                        "Online",
+                        style: TextStyle(color: Colors.green, fontSize: 12),
+                      );
+                    }
+
+                    return Text(
+                      "Offline",
+                      style: TextStyle(color: Colors.red, fontSize: 12),
+                    );
+                  },
                 ),
               ],
             ),

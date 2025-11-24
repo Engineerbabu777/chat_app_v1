@@ -1,3 +1,5 @@
+// ignore_for_file: unused_field
+
 import 'dart:async';
 import 'package:chat_app/data/repositories/chat_repository.dart';
 import 'package:chat_app/logic/cubits/chat/chat_state.dart';
@@ -18,7 +20,14 @@ class ChatCubit extends Cubit<ChatState> {
     required ChatRepository chatRepository,
     required this.currentUserId,
   }) : _chatRepository = chatRepository,
-       super(const ChatState()); // ✅ works with default messages list
+       super(
+         const ChatState(
+           false, // isUserBlocked
+           null, // recieverLastSeen
+           false, // amIBlocked
+         ),
+       );
+  // ✅ works with default messages list
 
   void enterChat(String receiverId) async {
     emit(state.copyWith(status: ChatStatus.loading));
@@ -110,6 +119,8 @@ class ChatCubit extends Cubit<ChatState> {
   void _subscribeToOnlineUsers(String userId) async {
     _onlineUsersSubscription?.cancel();
 
+    print("SUbscirbed to online users!");
+
     _onlineUsersSubscription = _chatRepository
         .getUserOnlineStatus(userId)
         .listen(
@@ -132,6 +143,8 @@ class ChatCubit extends Cubit<ChatState> {
 
   void _subscribeToTypingStatus(String chatRoomId) async {
     _onlineUsersSubscription?.cancel();
+
+    print("SUbscirbed to typings users!");
 
     _onlineUsersSubscription = _chatRepository
         .getTypingStatus(chatRoomId)
