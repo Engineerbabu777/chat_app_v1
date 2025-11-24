@@ -43,32 +43,37 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Babu Messagner App',
-      navigatorKey: getIt<AppRouter>().navigatorKey,
-      debugShowCheckedModeBanner: false,
-      theme: AppTheme.lightTheme,
-      home: BlocBuilder<AuthCubit, AuthState>(
-        builder: (context, state) {
-          if (state.status == AuthStatus.initial) {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          }
+    return GestureDetector(
+      onTap: () {
+        FocusManager.instance.primaryFocus?.unfocus();
+      },
+      child: MaterialApp(
+        title: 'Babu Messagner App',
+        navigatorKey: getIt<AppRouter>().navigatorKey,
+        debugShowCheckedModeBanner: false,
+        theme: AppTheme.lightTheme,
+        home: BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, state) {
+            if (state.status == AuthStatus.initial) {
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            }
 
-          if (state.status == AuthStatus.loading) {
-            return const Scaffold(
-              body: Center(child: CircularProgressIndicator()),
-            );
-          }
+            if (state.status == AuthStatus.loading) {
+              return const Scaffold(
+                body: Center(child: CircularProgressIndicator()),
+              );
+            }
 
-          if (state.status == AuthStatus.authenticated) {
-            return HomeScreen();
-          }
+            if (state.status == AuthStatus.authenticated) {
+              return HomeScreen();
+            }
 
-          return LoginScreen();
-        },
-        bloc: getIt<AuthCubit>(),
+            return LoginScreen();
+          },
+          bloc: getIt<AuthCubit>(),
+        ),
       ),
     );
   }
