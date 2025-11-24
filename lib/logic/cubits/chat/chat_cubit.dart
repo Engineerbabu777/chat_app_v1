@@ -202,6 +202,14 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
+  Future<void> unBlockUser(String userId, String userName) async {
+    try {
+      await _chatRepository.unBlockUser(currentUserId, userId);
+    } catch (e) {
+      print(e.toString());
+    }
+  }
+
   @override
   Future<void> close() {
     _messagesSubscription?.cancel();
