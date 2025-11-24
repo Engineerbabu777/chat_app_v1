@@ -25,7 +25,7 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
   final TextEditingController _sendMessageController = TextEditingController();
   final FocusNode _inputFocusNode = FocusNode();
   late final ChatCubit _chatCubit;
-   final _scrollController = ScrollController();
+  final _scrollController = ScrollController();
   List<ChatMessageModel> _previousMessages = [];
 
   bool _isComposing = false;
@@ -39,30 +39,34 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
     _sendMessageController.addListener(() {
       _onTextChanged();
     });
-    _scrollController.addListener()
+    _scrollController.addListener(_onScroll);
     _chatCubit = getIt<ChatCubit>();
     _chatCubit.enterChat(widget.receiverId);
   }
 
-void _onScroll(){
-
-if(_scrollController.position.pixels>=_scrollController.position.maxScrollExtent-200){
-  _chatCubit.loadMoreMessages();
-}
-}
-
-void _scrollToBottom(){
-  if(_scrollController.hasClients){
-    _scrollController.animateTo(0, duration: Duration(seconds: 300), curve: Curves.easeOut);
+  void _onScroll() {
+    if (_scrollController.position.pixels >=
+        _scrollController.position.maxScrollExtent - 200) {
+      _chatCubit.loadMoreMessages();
+    }
   }
-}
 
-void _hasNewMessages(List<ChatMessageModel> messages){
-  if(messages.length != _previousMessages.length){
-    _scrollToBottom();
-    _previousMessages = messages;
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        0,
+        duration: Duration(milliseconds: 200),
+        curve: Curves.easeOut,
+      );
+    }
   }
-}
+
+  void _hasNewMessages(List<ChatMessageModel> messages) {
+    if (messages.length != _previousMessages.length) {
+      _scrollToBottom();
+      _previousMessages = messages;
+    }
+  }
 
   Future<void> _handleSendMessage() async {
     final messageText = _sendMessageController.text.trim();
@@ -94,6 +98,7 @@ void _hasNewMessages(List<ChatMessageModel> messages){
     _inputFocusNode.dispose();
     _sendMessageController.dispose();
     _chatCubit.leaveChat();
+    _scrollController.dispose();
     super.dispose();
   }
 
@@ -212,11 +217,15 @@ void _hasNewMessages(List<ChatMessageModel> messages){
           if (state.status == ChatStatus.error) {
             return Center(child: Text(state.error ?? "Something went wrong!"));
           }
+
+          _hasNewMessages(state.messages); // 👈 CALL IT HERE
+
           return Column(
             children: [
               Expanded(
                 child: ListView.builder(
                   reverse: true,
+                  controller: _scrollController,
                   itemCount: state.messages.length,
                   itemBuilder: (BuildContext context, int index) {
                     final message = state.messages[index];
