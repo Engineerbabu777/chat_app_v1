@@ -1,4 +1,6 @@
 import 'package:chat_app/config/theme/app_theme.dart';
+import 'package:chat_app/data/repositories/auth_repository.dart';
+import 'package:chat_app/data/repositories/chat_repository.dart';
 import 'package:chat_app/data/repositories/contact_repository.dart';
 import 'package:chat_app/data/services/service_locator.dart';
 import 'package:chat_app/logic/cubits/auth/auth_cubit.dart';
@@ -15,10 +17,14 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late final ContactRepository _contactRepository;
+  late final ChatRepository _chatRepository;
+  late final String _currentUserId;
 
   @override
   void initState() {
     _contactRepository = getIt<ContactRepository>();
+    _chatRepository = getIt<ChatRepository>();
+    _currentUserId = getIt<AuthRepository>().currentUser?.uid ?? "";
     super.initState();
   }
 
@@ -99,11 +105,11 @@ class _HomeScreenState extends State<HomeScreen> {
         actionsPadding: EdgeInsets.symmetric(horizontal: 20),
         title: Text("Chats"),
       ),
-      body: Center(
-        child: Text(
-          "User is AUTHENTICATED",
-          style: TextStyle(fontWeight: FontWeight.w500, color: Colors.brown),
-        ),
+      body: StreamBuilder(
+        stream: _chatRepository.getChatRooms(_currentUserId),
+        builder: (context){
+          return 
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -115,3 +121,5 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 }
+
+
