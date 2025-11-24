@@ -194,7 +194,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Future<void> blockUser(String userId, String userName) async {
+  Future<void> blockUser(String userId) async {
     try {
       await _chatRepository.blockUser(currentUserId, userId);
     } catch (e) {
@@ -202,7 +202,7 @@ class ChatCubit extends Cubit<ChatState> {
     }
   }
 
-  Future<void> unBlockUser(String userId, String userName) async {
+  Future<void> unBlockUser(String userId) async {
     try {
       await _chatRepository.unBlockUser(currentUserId, userId);
     } catch (e) {
