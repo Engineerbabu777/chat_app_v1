@@ -129,6 +129,28 @@ class ChatCubit extends Cubit<ChatState> {
         );
   }
 
+  void _subscribeToTypingStatus(String chatRoomId) async {
+    _onlineUsersSubscription?.cancel();
+
+    _onlineUsersSubscription = _chatRepository
+        .getTypingStatus(chatRoomId)
+        .listen(
+          (status) {
+            final isTyping = status["isTyping"] as bool;
+            final typingUserId = status["typingUserId"] as Timestamp?;
+
+            emit(
+              state.copyWith(
+                isRecieverTyping: isTyping && typingUserId != currentUserId,
+              ),
+            );
+          },
+          onError: (error) {
+            print("error getting online status!");
+          },
+        );
+  }
+
   @override
   Future<void> close() {
     _messagesSubscription?.cancel();
