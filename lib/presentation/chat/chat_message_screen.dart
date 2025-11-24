@@ -262,9 +262,11 @@ class _ChatMessageScreenState extends State<ChatMessageScreen> {
                         ),
 
                         IconButton(
-                          onPressed: _handleSendMessage,
+                          onPressed: _isComposing ? _handleSendMessage : null,
                           icon: const Icon(Icons.send),
-                          color: Theme.of(context).primaryColor,
+                          color: _isComposing
+                              ? Theme.of(context).primaryColor
+                              : Colors.grey,
                         ),
                       ],
                     );
